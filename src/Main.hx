@@ -1,6 +1,8 @@
 package;
 
-import openfl.display.Sprite;
+import openfl.display.*;
+import openfl.events.*;
+import openfl.ui.*;
 import flixel.*;
 
 class Main extends Sprite
@@ -11,5 +13,13 @@ class Main extends Sprite
 
 		var f:FlxGame = new FlxGame(stage.stageWidth, stage.stageHeight, MainState, 1, 60, 60, true, false);
 		addChild(f);
+
+		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
+	}
+
+	private function kUp(e:KeyboardEvent):Void {
+#if !flash
+		if (e.keyCode == Keyboard.ESCAPE) Sys.exit(1);
+#end
 	}
 }
