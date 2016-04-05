@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="Fe" package="com.sample.fe" version="1.0.0" company="Company Name" />
+	<app main="Main" path="bin" file="Fe" />
+	<window width="1280" height="720" />
+	
+	<source path="src" />
+	
+	<haxelib name="openfl" />
+	<haxelib name="flixel" />
+	
+	<assets rename="assets" />
+	
+</project>
