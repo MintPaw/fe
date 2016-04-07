@@ -1,8 +1,9 @@
 GameObject =>
-	Item => wear:Int, age:Int, actions:Array<Action>, exp:Int, expTillNext:Int, clone():Item, use(action:Action):Void
+	Item =>
+		id:Int, wear:Int, age:Int, actions:Array<Action>, exp:Int, expTillNext:Int, clone():Item, use(action:Action):Void, nextId:Int
 
-	Entity => ap:Int, hp:Int, location:Point
-		Unit => dead:Bool, items:Array<Item>, move(loc:Array<Point>):Void, Action:Array<Ailment>, stats:Stats
+	Entity => hp:Int, location:Point, attackable:Bool, dead:Bool, drops:Array<Item>
+		Unit => ap:Int, items:Array<Item>, move(loc:Array<Point>):Void, ailments:Array<Ailment>, stats:Stats
 
 	Action => name:String, description:String, pattern:Pattern, damage:Point, accuracy:Point, splah:Bool
 
