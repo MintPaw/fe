@@ -14,6 +14,8 @@ class Main extends Sprite
 		var f:FlxGame = new FlxGame(stage.stageWidth, stage.stageHeight, MainState, 1, 60, 60, true, false);
 		addChild(f);
 
+		new mintDebugger.MintDebugger(stage, f);
+
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
 	}
 

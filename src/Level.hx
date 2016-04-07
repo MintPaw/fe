@@ -22,7 +22,7 @@ class Level
 		tilemap.loadMapFromCSV(cast(tiledMap.getLayer("main"), TiledTileLayer).csvData, tileGraphic, 32, 32, null, 1);
 
 		for (obj in cast(tiledMap.getLayer("obj"), TiledObjectLayer).objects) {
-			if (obj.name == "playerSpawn") playerSpawn.set(obj.x, obj.y);
+			if (obj.name == "playerSpawn") playerSpawn.set(obj.x/Reg.TILE_SIZE, obj.y/Reg.TILE_SIZE);
 		}
 	}
 }
