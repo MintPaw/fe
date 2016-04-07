@@ -1,6 +1,7 @@
 package;
 
 import flixel.*;
+import flixel.FlxCamera;
 import flixel.tile.*;
 import flixel.group.FlxGroup;
 import flixel.math.*;
@@ -16,7 +17,6 @@ class CombatState extends FlxState
 
 	private var _unitGroup:FlxTypedGroup<Unit>;
 	private var _selectedUnit:Unit = null;
-
 
 	private var _state:Int;
 
@@ -40,6 +40,9 @@ class CombatState extends FlxState
 		add(_cursor);
 
 		_state = SELECT;
+		FlxG.camera.setScrollBoundsRect(0, 0, _level.tilemap.width, _level.tilemap.height, true);
+		FlxG.camera.follow(_cursor, FlxCameraFollowStyle.TOPDOWN);
+		FlxG.camera.antialiasing = true;
 	}
 
 	override public function update(elapsed:Float):Void
