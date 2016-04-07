@@ -13,10 +13,19 @@ class Entity extends FlxSpriteGroup
 	public var attackable:Bool = false;
 	public var dead:Bool = false;
 	public var drops:Array<Item> = [];
+	
+	public var mainGraphic:FlxSprite = new FlxSprite();
 
 	public function new() {
 		super();
 
-		makeGraphic(32, 32, 0xFFFF0000);
+		mainGraphic.makeGraphic(32, 32, 0xFFFF0000);
+		add(mainGraphic);
+	}
+
+	public function warp(x:Int, y:Int):Void {
+		location.set(x, y);
+		this.x = x * Reg.TILE_SIZE;
+		this.y = y * Reg.TILE_SIZE;
 	}
 }

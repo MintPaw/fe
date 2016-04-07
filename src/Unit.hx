@@ -1,5 +1,3 @@
-//Unit => ap:Int, items:Array<Item>, move(loc:Array<Point>):Void, ailments:Array<Ailment>, stats:Stats
-
 package;
 
 import flixel.*;
@@ -18,12 +16,12 @@ class Unit extends Entity
 	public function new() {
 		super();
 
-		makeGraphic(32, 32, 0xFFFF0000);
+		attackable = true;
 	}
 }
 
 typedef Stats = { 
 }
 
-typedef Ailments = { 
+typedef Ailment = { 
 }
