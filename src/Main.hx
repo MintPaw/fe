@@ -15,6 +15,7 @@ class Main extends Sprite
 		addChild(f);
 
 		new mintDebugger.MintDebugger(stage, f);
+		mintDebugger.MintDebugger.priorityNames = ["_state", "members", "_cursor"];
 
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
 	}
