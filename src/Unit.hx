@@ -12,6 +12,7 @@ class Unit extends Entity
 	public var items:Array<Item>;
 	public var stats:Stats;
 	public var ailments:Array<Ailment>;
+	public var controllable:Bool = false;
 
 	public function new() {
 		super();
