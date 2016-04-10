@@ -52,7 +52,7 @@ class CombatState extends FlxState
 		Text.loadFont("default", "assets/font/default0.png", "assets/font/default0.fnt");
 		var t:Text = new Text();
 		t.fontName = "default";
-		t.text = "abcdefghijklmnopqrstuvwxyz";
+		t.text = "This is a test sentenceThis is a test sentenceThis is a test sentenceThis is a test sentenceThis is a test sentence";
 		add(t);
 	}
 
