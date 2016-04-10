@@ -1,10 +1,12 @@
 package;
 
+import ui.*;
 import flixel.*;
 import flixel.FlxCamera;
 import flixel.tile.*;
 import flixel.group.FlxGroup;
 import flixel.math.*;
+import flixel.util.*;
 import openfl.*;
 
 class CombatState extends FlxState
@@ -46,6 +48,12 @@ class CombatState extends FlxState
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.tilemap.width, _level.tilemap.height, true);
 		FlxG.camera.follow(_cursor, FlxCameraFollowStyle.TOPDOWN);
 		FlxG.camera.antialiasing = true;
+
+		Text.loadFont("default", "assets/font/default0.png", "assets/font/default0.fnt");
+		var t:Text = new Text();
+		t.fontName = "default";
+		t.text = "abcdefghijklmnopqrstuvwxyz";
+		add(t);
 	}
 
 	override public function update(elapsed:Float):Void
