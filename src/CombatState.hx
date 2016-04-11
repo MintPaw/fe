@@ -49,11 +49,10 @@ class CombatState extends FlxState
 		FlxG.camera.follow(_cursor, FlxCameraFollowStyle.TOPDOWN);
 		FlxG.camera.antialiasing = true;
 
-		Text.loadFont("default", "assets/font/default0.png", "assets/font/default0.fnt");
-		var t:Text = new Text();
-		t.fontName = "default";
-		t.text = "This is a test sentenceThis is a test sentenceThis is a test sentenceThis is a test sentenceThis is a test sentence";
-		add(t);
+		Text.loadFont("default0", "assets/font/default0.png", "assets/font/default0.fnt");
+		Text.loadFont("default1", "assets/font/default1.png", "assets/font/default1.fnt");
+		Text.loadFont("default2", "assets/font/default2.png", "assets/font/default2.fnt");
+		Text.loadFont("default3", "assets/font/default3.png", "assets/font/default3.fnt");
 	}
 
 	override public function update(elapsed:Float):Void

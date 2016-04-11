@@ -6,6 +6,7 @@ import flixel.group.FlxGroup;
 import flixel.text.*;
 import flixel.tweens.*;
 import flixel.math.*;
+import flixel.util.*;
 import flixel.graphics.*;
 import flixel.graphics.frames.*;
 
@@ -18,6 +19,8 @@ class Text extends FlxTypedGroup<Char>
 	public var x:Float = 0;
 	public var y:Float = 0;
 	public var width:Float = 1000;
+	public var height(default, null):Float = 0;
+	public var colour:FlxColor;
 
 	public function new() {
 		super();
@@ -25,29 +28,30 @@ class Text extends FlxTypedGroup<Char>
 
 	public function set_text(s:String):String {
 		text = s;
+		blit();
+		return s;
+	}
+
+	public function blit():Void {
 		var font:FlxBitmapFont = fonts.get(fontName);
+		height = font.lineHeight;
 
 		var lineBreaks:Array<Int> = [];
 
-		var curWord:String = "";
 		var wordLen:Int = 0;
-		var curLine:String = "";
 		var lineLen:Int = 0;
 		for (i in 0...text.length) {
 			var charCode:Int = text.charCodeAt(i);
 
 			if (charCode == 32) {
-				wordLen += font.spaceWidth;
 				if (wordLen + lineLen > width) {
 					lineBreaks.push(i);
 					lineLen = 0;
-					curLine = "";
 				}
-				curLine += curWord;
+				wordLen += font.spaceWidth;
 				lineLen += wordLen;
 				wordLen = 0;
 			} else {
-				curWord += text.charAt(i);
 				wordLen += font.getCharAdvance(charCode);
 			}
 		}
@@ -85,7 +89,6 @@ class Text extends FlxTypedGroup<Char>
 
 		curPos.put();
 
-		return s;
 	}
 
 	public static function loadFont(name:String, imageLocation:String, dataLocation:String):Void {

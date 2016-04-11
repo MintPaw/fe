@@ -18,6 +18,9 @@ class GameMenu extends FlxSubState
 	override public function create():Void {
 		var f:MenuFrame = new MenuFrame();
 		add(f);
+		f.addItem("test a");
+		f.addItem("test b");
+		f.addItem("test c");
 		_frames.push(f);
 	}
 }
