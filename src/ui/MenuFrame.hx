@@ -33,6 +33,7 @@ class MenuFrame extends FlxGroup
 		t.text = s;
 		t.x = _bg.x + _padLR;
 		t.y = _bg.y + _padUD + (_texts.length * (t.height + 10));
+		t.blit();
 		add(t);
 
 		_texts.push(t);

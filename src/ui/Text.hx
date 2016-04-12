@@ -33,6 +33,7 @@ class Text extends FlxTypedGroup<Char>
 	}
 
 	public function blit():Void {
+		for (c in members) c.kill();
 		var font:FlxBitmapFont = fonts.get(fontName);
 		height = font.lineHeight;
 
@@ -73,7 +74,9 @@ class Text extends FlxTypedGroup<Char>
 			var frame:FlxFrame = font.getCharFrame(charCode);
 			var char:Char;
 			try {
-				char = new Char(FlxGraphic.fromFrame(frame), colour);
+				char = recycle(Char);
+				char.set(FlxGraphic.fromFrame(frame), colour);
+				// char = new Char(FlxGraphic.fromFrame(frame), colour);
 			} catch(e:Dynamic) {
 				trace("Error on charCode " + charCode + "(" + text.charAt(i) + ")");
 				throw e;
