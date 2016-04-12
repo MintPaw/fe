@@ -92,4 +92,5 @@ class CombatState extends FlxState
 		_selectedUnit = unit;
 		openSubState(new GameMenu(unit));
 	}
+
 }
