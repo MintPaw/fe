@@ -20,7 +20,7 @@ class Text extends FlxTypedGroup<Char>
 	public var y:Float = 0;
 	public var width:Float = 1000;
 	public var height(default, null):Float = 0;
-	public var colour:FlxColor;
+	public var colour:FlxColor = 0xFFFFFFFF;
 
 	public function new() {
 		super();
@@ -73,7 +73,7 @@ class Text extends FlxTypedGroup<Char>
 			var frame:FlxFrame = font.getCharFrame(charCode);
 			var char:Char;
 			try {
-				char = new Char(FlxGraphic.fromFrame(frame));
+				char = new Char(FlxGraphic.fromFrame(frame), colour);
 			} catch(e:Dynamic) {
 				trace("Error on charCode " + charCode + "(" + text.charAt(i) + ")");
 				throw e;
