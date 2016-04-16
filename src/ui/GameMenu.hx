@@ -17,12 +17,23 @@ class GameMenu extends FlxSubState
 
 	override public function create():Void {
 		var f:MenuFrame = new MenuFrame();
+		f.select = select;
+		f.hover = hover;
 		add(f);
+
 		if (_unit.controllable) {
 			f.addItem("Move");
-			f.addItem("Other 1");
+			f.addItem("Other 1", false);
 		}
+
 		_frames.push(f);
+	}
+
+	private function select(text:Text):Void {
+		trace("Sel", text.text);
+	}
+
+	private function hover(text:Text):Void {
 	}
 
 }

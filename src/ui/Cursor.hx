@@ -6,25 +6,33 @@ import flixel.math.*;
 class Cursor extends FlxSprite
 {
 	public static var align:FlxPoint = new FlxPoint(-5, 7);
-	public var location:FlxPoint;
+
+	public var selectedTile:FlxPoint;
+	public var selectedText:Text = null;
 	
 	public function new() {
 		super();
 
-		location = new FlxPoint();
+		selectedTile = new FlxPoint();
 
 		loadGraphic("assets/img/cursor.png");
 	}
 
 	public function moveTo(x:Int, y:Int):Void {
-		location.set(x, y);
-		if (location.x > Reg.mapWidth - 1) location.x = Reg.mapWidth - 1;
-		if (location.y > Reg.mapHeight - 1) location.y = Reg.mapHeight - 1;
-		if (location.x <= 0) location.x = 0;
-		if (location.y <= 0) location.y = 0;
+		selectedTile.set(x, y);
+		if (selectedTile.x > Reg.mapWidth - 1) selectedTile.x = Reg.mapWidth - 1;
+		if (selectedTile.y > Reg.mapHeight - 1) selectedTile.y = Reg.mapHeight - 1;
+		if (selectedTile.x <= 0) selectedTile.x = 0;
+		if (selectedTile.y <= 0) selectedTile.y = 0;
 
-		this.x = location.x * Reg.TILE_SIZE - width/2 + align.x;
-		this.y = location.y * Reg.TILE_SIZE + Reg.TILE_SIZE/2 - height/2 + align.y;
+		this.x = selectedTile.x * Reg.TILE_SIZE - width/2 + align.x;
+		this.y = selectedTile.y * Reg.TILE_SIZE + Reg.TILE_SIZE/2 - height/2 + align.y;
+	}
+
+	public function moveToText(text:Text):Void {
+		selectedText = text;
+		x = text.x - width + align.x;
+		y = text.y + text.height/2 - height/2 + align.y;
 	}
 
 }
