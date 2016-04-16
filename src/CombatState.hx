@@ -11,9 +11,6 @@ import openfl.*;
 
 class CombatState extends FlxState
 {
-	private static var SELECT:Int = 0;
-	private static var MENU:Int = 1;
-
 	private var _level:Level;
 	private var _cursor:Cursor;
 	private var _menu:GameMenu;
@@ -21,7 +18,7 @@ class CombatState extends FlxState
 	private var _unitGroup:FlxTypedGroup<Unit>;
 	private var _selectedUnit:Unit = null;
 
-	private var _state:Int;
+	private var _state:String;
 
 	public function new() {
 		super();
@@ -45,7 +42,7 @@ class CombatState extends FlxState
 		_cursor.moveTo(cast p.location.x, cast p.location.y);
 		add(_cursor);
 
-		_state = SELECT;
+		_state = "select";
 		FlxG.camera.setScrollBoundsRect(0, 0, _level.tilemap.width, _level.tilemap.height, true);
 		FlxG.camera.follow(_cursor, FlxCameraFollowStyle.TOPDOWN);
 		FlxG.camera.antialiasing = true;
@@ -62,7 +59,7 @@ class CombatState extends FlxState
 
 		if (_menu != null && _menu.enabled) return;
 
-		if (_state == SELECT) {
+		if (_state == "select") {
 			if (Input.map.justRelLeft) _cursor.moveTo(cast _cursor.selectedTile.x - 1, cast _cursor.selectedTile.y);
 			if (Input.map.justRelRight) _cursor.moveTo(cast _cursor.selectedTile.x + 1, cast _cursor.selectedTile.y);
 			if (Input.map.justRelUp) _cursor.moveTo(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y - 1);
@@ -89,6 +86,6 @@ class CombatState extends FlxState
 	}
 
 	private function menuExit(type:String):Void {
-		trace(type);
+		_state = type;
 	}
 }
