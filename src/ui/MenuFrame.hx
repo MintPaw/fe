@@ -32,7 +32,6 @@ class MenuFrame extends FlxGroup
 
 		_cursor = new Cursor();
 		add(_cursor);
-
 	}
 
 	public function addItem(s:String, enabled:Bool=true):Void {

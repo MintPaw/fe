@@ -16,6 +16,7 @@ class CombatState extends FlxState
 
 	private var _level:Level;
 	private var _cursor:Cursor;
+	private var _menu:GameMenu;
 
 	private var _unitGroup:FlxTypedGroup<Unit>;
 	private var _selectedUnit:Unit = null;
@@ -58,6 +59,9 @@ class CombatState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
+
+		if (_menu != null && _menu.alive) return;
+
 		if (_state == SELECT) {
 			if (Input.map.justLeft) _cursor.moveTo(cast _cursor.selectedTile.x - 1, cast _cursor.selectedTile.y);
 			if (Input.map.justRight) _cursor.moveTo(cast _cursor.selectedTile.x + 1, cast _cursor.selectedTile.y);
@@ -79,7 +83,7 @@ class CombatState extends FlxState
 
 	private function selectUnit(unit:Unit):Void {
 		_selectedUnit = unit;
-		openSubState(new GameMenu(unit));
+		_menu = new GameMenu(unit);
+		add(_menu);
 	}
-
 }

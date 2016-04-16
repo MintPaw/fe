@@ -3,19 +3,16 @@ package ui;
 import flixel.*;
 import flixel.group.*;
 
-class GameMenu extends FlxSubState
+class GameMenu extends FlxGroup
 {
 	private var _unit:Unit;
 	private var _frames:Array<MenuFrame>;
 
 	public function new(unit:Unit) {
 		super();
-
 		_unit = unit;
 		_frames = [];
-	}
 
-	override public function create():Void {
 		var f:MenuFrame = new MenuFrame();
 		f.select = select;
 		f.hover = hover;
@@ -30,7 +27,7 @@ class GameMenu extends FlxSubState
 	}
 
 	private function select(text:Text):Void {
-		trace("Sel", text.text);
+		// if (text.text.toLowerCase() == "move") 
 	}
 
 	private function hover(text:Text):Void {
