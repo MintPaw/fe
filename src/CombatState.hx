@@ -60,7 +60,7 @@ class CombatState extends FlxState
 	{
 		super.update(elapsed);
 
-		if (_menu != null && _menu.alive) return;
+		if (_menu != null && _menu.enabled) return;
 
 		if (_state == SELECT) {
 			if (Input.map.justLeft) _cursor.moveTo(cast _cursor.selectedTile.x - 1, cast _cursor.selectedTile.y);
@@ -84,6 +84,11 @@ class CombatState extends FlxState
 	private function selectUnit(unit:Unit):Void {
 		_selectedUnit = unit;
 		_menu = new GameMenu(unit);
+		_menu.menuExit = menuExit;
 		add(_menu);
+	}
+
+	private function menuExit(type:String):Void {
+		trace(type);
 	}
 }

@@ -8,6 +8,10 @@ class GameMenu extends FlxGroup
 	private var _unit:Unit;
 	private var _frames:Array<MenuFrame>;
 
+	public var menuExit:String->Void;
+	public var enabled:Bool = true;
+	public var hidden:Bool = false;
+
 	public function new(unit:Unit) {
 		super();
 		_unit = unit;
@@ -27,10 +31,19 @@ class GameMenu extends FlxGroup
 	}
 
 	private function select(text:Text):Void {
-		// if (text.text.toLowerCase() == "move") 
+		if (text.text.toLowerCase() == "move") {
+			enabled = false;
+			visible = false;
+			menuExit("move");
+		}
 	}
 
 	private function hover(text:Text):Void {
+	}
+
+	override public function update(elapsed:Float):Void {
+		if (!enabled) return;
+		super.update(elapsed);
 	}
 
 }
