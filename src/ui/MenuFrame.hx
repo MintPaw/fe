@@ -53,4 +53,10 @@ class MenuFrame extends FlxGroup
 		_cursor.y = item.y + item.height/2 - _cursor.height/2 + Cursor.align.y;
 	}
 
+	override public function update(elapsed:Float):Void {
+		super.update(elapsed);
+		// if (
+
+	}
+
 }
