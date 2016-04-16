@@ -20,6 +20,7 @@ class GameMenu extends FlxSubState
 		add(f);
 		if (_unit.controllable) {
 			f.addItem("Move");
+			f.addItem("Other 1");
 		}
 		_frames.push(f);
 	}

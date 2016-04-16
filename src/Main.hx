@@ -18,6 +18,11 @@ class Main extends Sprite
 		mintDebugger.MintDebugger.priorityNames = ["_state", "members", "_cursor"];
 
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
+		stage.addEventListener(Event.ENTER_FRAME, update);
+	}
+
+	private function update(e:Event):Void {
+		Input.update();
 	}
 
 	private function kUp(e:KeyboardEvent):Void {

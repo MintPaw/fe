@@ -58,24 +58,13 @@ class CombatState extends FlxState
 	override public function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		var left, right, up, down, a, b, c;
-		left = right = up = down = a = b = c = false;
-
-		if (FlxG.keys.justPressed.LEFT) left = true;
-		if (FlxG.keys.justPressed.RIGHT) right = true;
-		if (FlxG.keys.justPressed.UP) up = true;
-		if (FlxG.keys.justPressed.DOWN) down = true;
-		if (FlxG.keys.justPressed.Z) a = true;
-		if (FlxG.keys.justPressed.X) b = true;
-		if (FlxG.keys.justPressed.Y) c = true;
-
 		if (_state == SELECT) {
-			if (left) _cursor.moveTo(cast _cursor.location.x - 1, cast _cursor.location.y);
-			if (right) _cursor.moveTo(cast _cursor.location.x + 1, cast _cursor.location.y);
-			if (up) _cursor.moveTo(cast _cursor.location.x, cast _cursor.location.y - 1);
-			if (down) _cursor.moveTo(cast _cursor.location.x, cast _cursor.location.y + 1);
+			if (Input.map.left) _cursor.moveTo(cast _cursor.location.x - 1, cast _cursor.location.y);
+			if (Input.map.right) _cursor.moveTo(cast _cursor.location.x + 1, cast _cursor.location.y);
+			if (Input.map.up) _cursor.moveTo(cast _cursor.location.x, cast _cursor.location.y - 1);
+			if (Input.map.down) _cursor.moveTo(cast _cursor.location.x, cast _cursor.location.y + 1);
 
-			if (a) {
+			if (Input.map.z) {
 				var u:Unit = findUnitOn(cast _cursor.location.x, cast _cursor.location.y);
 				if (u != null) selectUnit(u);
 			}
