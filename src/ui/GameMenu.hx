@@ -14,6 +14,7 @@ class GameMenu extends FlxGroup
 
 	public function new(unit:Unit) {
 		super();
+		trace("enter");
 		_unit = unit;
 		_frames = [];
 

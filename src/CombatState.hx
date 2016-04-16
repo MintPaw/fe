@@ -63,12 +63,12 @@ class CombatState extends FlxState
 		if (_menu != null && _menu.enabled) return;
 
 		if (_state == SELECT) {
-			if (Input.map.justLeft) _cursor.moveTo(cast _cursor.selectedTile.x - 1, cast _cursor.selectedTile.y);
-			if (Input.map.justRight) _cursor.moveTo(cast _cursor.selectedTile.x + 1, cast _cursor.selectedTile.y);
-			if (Input.map.justUp) _cursor.moveTo(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y - 1);
-			if (Input.map.justDown) _cursor.moveTo(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y + 1);
+			if (Input.map.justRelLeft) _cursor.moveTo(cast _cursor.selectedTile.x - 1, cast _cursor.selectedTile.y);
+			if (Input.map.justRelRight) _cursor.moveTo(cast _cursor.selectedTile.x + 1, cast _cursor.selectedTile.y);
+			if (Input.map.justRelUp) _cursor.moveTo(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y - 1);
+			if (Input.map.justRelDown) _cursor.moveTo(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y + 1);
 
-			if (Input.map.z) {
+			if (Input.map.justRelZ) {
 				var u:Unit = findUnitOn(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y);
 				if (u != null) selectUnit(u);
 			}

@@ -8,6 +8,7 @@ class MenuFrame extends FlxGroup
 {
 	public var select:Text->Void;
 	public var hover:Text->Void;
+	public var enabled:Bool = true;
 
 	private var _bg:FlxSprite;
 	private var _texts:Array<Text>;
@@ -59,9 +60,10 @@ class MenuFrame extends FlxGroup
 
 		var selectedIndex:Int = _texts.indexOf(_cursor.selectedText);
 
-		if (Input.map.justUp && selectedIndex > 0) cursorTo(selectedIndex - 1);
-		if (Input.map.justDown && selectedIndex < _texts.length-1) cursorTo(selectedIndex + 1);
-		if (Input.map.justZ && _cursor.selectedText.enabled) select(_cursor.selectedText);
+		if (Input.map.justRelUp && selectedIndex > 0) cursorTo(selectedIndex - 1);
+		if (Input.map.justRelDown && selectedIndex < _texts.length-1) cursorTo(selectedIndex + 1);
+		if (Input.map.justRelZ && _cursor.selectedText.enabled) select(_cursor.selectedText);
+		Input.falseAll();
 	}
 
 }
