@@ -29,6 +29,7 @@ class CombatState extends FlxState
 		Reg.mapWidth = _level.tilemap.widthInTiles;
 		Reg.mapHeight = _level.tilemap.heightInTiles;
 		add(_level.tilemap);
+		add(_level.moveGrid);
 		
 		_unitGroup = new FlxTypedGroup<Unit>();
 
