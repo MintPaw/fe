@@ -58,7 +58,7 @@
 </data>
  </layer>
  <objectgroup name="obj">
-  <object id="14" name="playerSpawn" x="96" y="96">
+  <object id="14" name="playerSpawn" x="416" y="416">
    <ellipse/>
   </object>
  </objectgroup>

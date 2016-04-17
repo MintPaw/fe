@@ -87,5 +87,9 @@ class CombatState extends FlxState
 
 	private function menuExit(type:String):Void {
 		_state = type;
+
+		if (_state == "move") {
+			_level.createMoveGrid(_selectedUnit);
+		}
 	}
 }

@@ -7,10 +7,18 @@
 	
 	<source path="src" />
 	
+	<haxedef name="FLX_NO_GAMEPAD" />
+	<set name="telemetry" if="debug" />
+	<haxedef name="HXCPP_DEBUGGER" if="debug" />
+	<haxedef name="HXCPP_STACK_TRACE" if="debug" />
+	<haxedef name="HXCPP_TELEMETRY" if="debug" />
+
 	<haxelib name="openfl" />
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="mintDebugger" />
+	<haxelib name="hxtelemetry" if="debug" />
+
 	
 	<assets path="assets" />
 	

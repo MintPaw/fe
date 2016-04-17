@@ -8,7 +8,7 @@ import openfl.*;
 
 class Unit extends Entity
 {
-	public var ap:Int;
+	public var ap:Int = 10;
 	public var items:Array<Item>;
 	public var stats:Stats;
 	public var ailments:Array<Ailment>;
