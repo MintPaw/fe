@@ -13,7 +13,9 @@ class Level
 {
 	public var tilemap:FlxTilemap;
 	public var moveGrid:FlxGroup = new FlxGroup();
+
 	public var playerSpawn:FlxPoint = new FlxPoint();
+	public var validMovePoints:Array<FlxPoint> = [];
 
 	public function new(data:String, graphicPath:String) {
 		var tiledMap:TiledMap = new TiledMap(data);
@@ -81,7 +83,6 @@ class Level
 			}
 		}
 
-		var validMoves:Array<FlxPoint> = [];
 		for (p in cameFrom.keys()) {
 			var steps:Int = 0;
 			var nextFrom:FlxPoint = p;
@@ -91,10 +92,10 @@ class Level
 				steps++;
 			}
 
-			if (steps <= unit.ap) validMoves.push(p);
+			if (steps <= unit.ap) validMovePoints.push(p);
 		}
 
-		for (p in validMoves) {
+		for (p in validMovePoints) {
 			var tile:FlxSprite = new FlxSprite();
 			tile.makeGraphic(Reg.TILE_SIZE, Reg.TILE_SIZE, 0x880000FF);
 			tile.x = p.x * Reg.TILE_SIZE;

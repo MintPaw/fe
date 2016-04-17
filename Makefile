@@ -21,7 +21,7 @@ neko:
 
 bneko:
 	lastOpenflBuild='neko'
-	openfl build neko -debug
+	openfl build neko -debug --connect 4000
 
 rneko:
 	cd bin/linux64/neko/bin && ./Fe || true
