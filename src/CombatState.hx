@@ -7,6 +7,7 @@ import flixel.tile.*;
 import flixel.group.FlxGroup;
 import flixel.math.*;
 import flixel.util.*;
+import flixel.tweens.*;
 import openfl.*;
 
 class CombatState extends FlxState
@@ -78,9 +79,11 @@ class CombatState extends FlxState
 					_cursor.moveTo(cast nextTile.x, cast nextTile.y);
 
 			if (Input.map.justRelZ) {
+				_level.doneMoving();
+				_menu.kill();
 				var a:Action = new Action(Action.MOVE);
 				a.source = _selectedUnit.id;
-				a.loc = _cursor.selectedTile;
+				a.loc.copyFrom(_cursor.selectedTile);
 				performAction(a);
 			}
 		}
@@ -115,10 +118,14 @@ class CombatState extends FlxState
 	private function performAction(a:Action):Void {
 		_state = "acting";
 		if (a.type == Action.MOVE) {
-			
+			var path:Array<FlxPoint> = _level.findPath(a.loc);
+			var delay:Float = findUnitId(a.source).walk(path);
+			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";}, 0);
 		}
 	}
 
-	// private function findUnitId(id:Int):Entity {
-	// }
+	private function findUnitId(id:Int):Unit {
+		for (u in _unitGroup) if (u.id == id) return u;
+		return null;
+	}
 }

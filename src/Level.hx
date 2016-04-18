@@ -3,6 +3,7 @@ package;
 import flixel.*;
 import flixel.tile.*;
 import flixel.group.*;
+import flixel.group.FlxGroup;
 import flixel.math.*;
 import flixel.graphics.*;
 import flixel.graphics.frames.*;
@@ -12,7 +13,7 @@ import openfl.*;
 class Level
 {
 	public var tilemap:FlxTilemap = new FlxTilemap();
-	public var moveGrid:FlxGroup = new FlxGroup();
+	public var moveGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
 
 	public var playerSpawn:FlxPoint = new FlxPoint();
 	public var validMovePoints:Array<FlxPoint> = [];
@@ -99,7 +100,7 @@ class Level
 		}
 
 		for (p in validMovePoints) {
-			var tile:FlxSprite = new FlxSprite();
+			var tile:FlxSprite = moveGrid.recycle(FlxSprite);
 			tile.makeGraphic(Reg.TILE_SIZE, Reg.TILE_SIZE, 0x880000FF);
 			tile.x = p.x * Reg.TILE_SIZE;
 			tile.y = p.y * Reg.TILE_SIZE;
@@ -128,5 +129,10 @@ class Level
 
 		path.reverse();
 		return path;
+	}
+
+	public function doneMoving():Void {
+		for (m in moveGrid) m.kill();
+		moveGrid.kill();
 	}
 }

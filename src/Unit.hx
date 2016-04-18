@@ -4,6 +4,7 @@ import flixel.*;
 import flixel.tile.*;
 import flixel.group.*;
 import flixel.math.*;
+import flixel.tweens.*;
 import openfl.*;
 
 class Unit extends FlxSpriteGroup
@@ -36,6 +37,22 @@ class Unit extends FlxSpriteGroup
 		location.set(x, y);
 		this.x = x * Reg.TILE_SIZE;
 		this.y = y * Reg.TILE_SIZE;
+	}
+
+	public function walk(path:Array<FlxPoint>):Float {
+		var moveTime:Float = 0.1;
+		var delayTime:Float = 0.2;
+
+		for (i in 0...path.length) {
+			FlxTween.tween(this, {x:path[i].x * Reg.TILE_SIZE, y:path[i].y * Reg.TILE_SIZE}, moveTime,
+					{startDelay:delayTime*i, onComplete: i == path.length-1 ? function(t:FlxTween):Void{reloadLoc();}:null});
+			}
+
+		return delayTime*path.length;
+	}
+
+	public function reloadLoc():Void {
+		location.set(Std.int(x / Reg.TILE_SIZE), Std.int(y / Reg.TILE_SIZE));
 	}
 }
 
