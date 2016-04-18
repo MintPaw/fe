@@ -24,7 +24,9 @@ class Level
 	public function new(data:String, graphicPath:String) {
 		var tiledMap:TiledMap = new TiledMap(data);
 		var tileGraphic:FlxTileFrames =
-			FlxTileFrames.fromRectangle(graphicPath, new FlxPoint(Reg.TILE_SIZE, Reg.TILE_SIZE), null, new FlxPoint(5, 5));
+			FlxTileFrames.fromRectangle(
+					graphicPath,
+					new FlxPoint(Reg.TILE_SIZE, Reg.TILE_SIZE), new FlxRect(1, 1, 101, 67), new FlxPoint(2, 2));
 
 		tilemap.loadMapFromCSV(cast(tiledMap.getLayer("main"), TiledTileLayer).csvData, tileGraphic, 32, 32, null, 1);
 
