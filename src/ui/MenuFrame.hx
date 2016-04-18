@@ -28,10 +28,12 @@ class MenuFrame extends FlxGroup
 		_bg = new FlxSprite();
 		_bg.x = _bgPad.x;
 		_bg.y = _bgPad.y;
+		_bg.scrollFactor.set();
 		_bg.makeGraphic(frameWidth, frameHeight, 0xFF000000);
 		add(_bg);
 
 		_cursor = new Cursor();
+		_cursor.scrollFactor.set();
 		add(_cursor);
 	}
 

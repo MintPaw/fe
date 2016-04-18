@@ -76,6 +76,7 @@ class Text extends FlxTypedGroup<Char>
 			var char:Char;
 			try {
 				char = recycle(Char);
+				char.scrollFactor.set();
 				char.set(FlxGraphic.fromFrame(frame), colour);
 			} catch(e:Dynamic) {
 				trace("Error on charCode " + charCode + "(" + text.charAt(i) + ")");
