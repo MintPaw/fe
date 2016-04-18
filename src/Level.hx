@@ -17,7 +17,7 @@ class Level
 	public var playerSpawn:FlxPoint = new FlxPoint();
 	public var validMovePoints:Array<FlxPoint> = [];
 
-	private var _graphStart:FlxPoint = FlxPoint.get();
+	private var _startGraph:FlxPoint = FlxPoint.get();
 	private var _cameFromGraph:Map<FlxPoint, FlxPoint> = new Map();
 
 	public function new(data:String, graphicPath:String) {
@@ -69,11 +69,11 @@ class Level
 			return false;
 		}
 
-		_graphStart = FlxPoint.get(Std.int(unit.location.x), Std.int(unit.location.y));
+		_startGraph = FlxPoint.get(Std.int(unit.location.x), Std.int(unit.location.y));
 		var frontier:Array<FlxPoint> = [];
-		frontier.push(_graphStart);
+		frontier.push(_startGraph);
 		
-		_cameFromGraph.set(_graphStart, null);
+		_cameFromGraph.set(_startGraph, null);
 		while (frontier.length > 0) {
 			var current:FlxPoint = frontier.shift();
 
@@ -106,16 +106,22 @@ class Level
 			moveGrid.add(tile);
 		}
 
-		// current = goal
-		// 	path = [current]
-		// 	while current != start:
-		// 		current = came_from[current]
-		// 			path.append(current)
-		// 			path.reverse()
-
 		// todo: test free
 		// todo: correct ap distance
 	}
 
-	// public function findPath(
+	public function findPath(goal:FlxPoint):Array<FlxPoint> {
+		var current:FlxPoint = new FlxPoint();
+
+		for (p in _cameFromGraph.keys()) if (goal.equals(p)) current.copyFrom(p);
+
+		var path:Array<FlxPoint> = [current];
+		while (!current.equals(_startGraph)) {
+			current = _cameFromGraph.get(current);
+			path.push(current);
+		}
+
+		path.reverse();
+		return path;
+	}
 }

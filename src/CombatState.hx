@@ -64,8 +64,8 @@ class CombatState extends FlxState
 		var oldTile:FlxPoint = new FlxPoint();
 
 		if (_state == "select" || _state == "move") {
-			_cursor.selectedTile.copyTo(nextTile);
-			_cursor.selectedTile.copyTo(oldTile);
+			nextTile.copyFrom(_cursor.selectedTile);
+			oldTile.copyFrom(_cursor.selectedTile);
 			if (Input.map.justRelLeft) nextTile.set(_cursor.selectedTile.x - 1, _cursor.selectedTile.y);
 			if (Input.map.justRelRight) nextTile.set(_cursor.selectedTile.x + 1, _cursor.selectedTile.y);
 			if (Input.map.justRelUp) nextTile.set(_cursor.selectedTile.x, _cursor.selectedTile.y - 1);
