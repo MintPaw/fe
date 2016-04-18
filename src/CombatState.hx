@@ -60,28 +60,37 @@ class CombatState extends FlxState
 
 		if (_menu != null && _menu.enabled) return;
 
+		var nextTile:FlxPoint = new FlxPoint();
+		var oldTile:FlxPoint = new FlxPoint();
+
 		if (_state == "select" || _state == "move") {
-			var nextTile:FlxPoint = new FlxPoint();
-			var oldTile:FlxPoint = new FlxPoint();
 			_cursor.selectedTile.copyTo(nextTile);
 			_cursor.selectedTile.copyTo(oldTile);
 			if (Input.map.justRelLeft) nextTile.set(_cursor.selectedTile.x - 1, _cursor.selectedTile.y);
 			if (Input.map.justRelRight) nextTile.set(_cursor.selectedTile.x + 1, _cursor.selectedTile.y);
 			if (Input.map.justRelUp) nextTile.set(_cursor.selectedTile.x, _cursor.selectedTile.y - 1);
 			if (Input.map.justRelDown) nextTile.set(_cursor.selectedTile.x, _cursor.selectedTile.y + 1);
-			
-			if (_state == "move") {
-				var canMove:Bool = false;
-				for (p in _level.validMovePoints) if (nextTile.equals(p)) canMove = true;
-				if (!canMove) oldTile.copyTo(nextTile);
-			}
-			_cursor.moveTo(cast nextTile.x, cast nextTile.y);
+		}
 
+		if (_state == "move") {
+			for (p in _level.validMovePoints)
+				if (p.equals(nextTile))
+					_cursor.moveTo(cast nextTile.x, cast nextTile.y);
+
+			if (Input.map.justRelZ) {
+				var a:Action = new Action(Action.MOVE);
+				// a.source = _selectedUnit.id;
+				// a.loc = _cursor.selectedTile;
+				// carryOut(a);
+			}
+		}
+
+		if (_state == "select") {
+			_cursor.moveTo(cast nextTile.x, cast nextTile.y);
 			if (Input.map.justRelZ) {
 				var u:Unit = findUnitOn(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y);
 				if (u != null) selectUnit(u);
 			}
-
 		}
 	}
 
