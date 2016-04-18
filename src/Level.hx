@@ -11,18 +11,20 @@ import openfl.*;
 
 class Level
 {
-	public var tilemap:FlxTilemap;
+	public var tilemap:FlxTilemap = new FlxTilemap();
 	public var moveGrid:FlxGroup = new FlxGroup();
 
 	public var playerSpawn:FlxPoint = new FlxPoint();
 	public var validMovePoints:Array<FlxPoint> = [];
+
+	private var _graphStart:FlxPoint = FlxPoint.get();
+	private var _cameFromGraph:Map<FlxPoint, FlxPoint> = new Map();
 
 	public function new(data:String, graphicPath:String) {
 		var tiledMap:TiledMap = new TiledMap(data);
 		var tileGraphic:FlxTileFrames =
 			FlxTileFrames.fromRectangle(graphicPath, new FlxPoint(Reg.TILE_SIZE, Reg.TILE_SIZE), null, new FlxPoint(5, 5));
 
-		tilemap = new FlxTilemap();
 		tilemap.loadMapFromCSV(cast(tiledMap.getLayer("main"), TiledTileLayer).csvData, tileGraphic, 32, 32, null, 1);
 
 		for (obj in cast(tiledMap.getLayer("obj"), TiledObjectLayer).objects) {
@@ -31,6 +33,12 @@ class Level
 	}
 
 	public function createMoveGrid(unit:Unit):Void {
+		// Destroy old graph
+		for (p in _cameFromGraph.keys()) {
+			_cameFromGraph.get(p).put();
+			p.put();
+		}
+
 		// Create graph
 		function getConnected(point:FlxPoint):Array<FlxPoint> {
 			var a:Array<FlxPoint> = [];
@@ -61,29 +69,29 @@ class Level
 			return false;
 		}
 
-		var start:FlxPoint = FlxPoint.get(Std.int(unit.location.x), Std.int(unit.location.y));
+		_graphStart = FlxPoint.get(Std.int(unit.location.x), Std.int(unit.location.y));
 		var frontier:Array<FlxPoint> = [];
-		var cameFrom:Map<FlxPoint, FlxPoint> = new Map();
-		frontier.push(start);
-		cameFrom.set(start, null);
-
+		frontier.push(_graphStart);
+		
+		_cameFromGraph.set(_graphStart, null);
 		while (frontier.length > 0) {
 			var current:FlxPoint = frontier.shift();
 
 			for (next in getConnected(current)) {
-				if (!isVisited(next, cameFrom)) {
+				if (!isVisited(next, _cameFromGraph)) {
 					frontier.push(next);
-					cameFrom.set(next, current);
+					_cameFromGraph.set(next, current);
 				}
 			}
 		}
 
-		for (p in cameFrom.keys()) {
+		// Walk graph
+		for (p in _cameFromGraph.keys()) {
 			var steps:Int = 0;
 			var nextFrom:FlxPoint = p;
 
 			while (nextFrom != null) {
-				nextFrom = cameFrom.get(nextFrom);
+				nextFrom = _cameFromGraph.get(nextFrom);
 				steps++;
 			}
 
@@ -105,7 +113,9 @@ class Level
 		// 			path.append(current)
 		// 			path.reverse()
 
-		// for (p in visited) p.put();
-		//todo: free all
+		// todo: test free
+		// todo: correct ap distance
 	}
+
+	// public function findPath(
 }
