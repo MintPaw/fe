@@ -120,6 +120,6 @@ class CombatState extends FlxState
 		}
 	}
 
-	// private function entityById(id:Int):Entity {
+	// private function findUnitId(id:Int):Entity {
 	// }
 }
