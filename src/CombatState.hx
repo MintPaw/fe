@@ -79,9 +79,9 @@ class CombatState extends FlxState
 
 			if (Input.map.justRelZ) {
 				var a:Action = new Action(Action.MOVE);
-				// a.source = _selectedUnit.id;
-				// a.loc = _cursor.selectedTile;
-				// carryOut(a);
+				a.source = _selectedUnit.id;
+				a.loc = _cursor.selectedTile;
+				performAction(a);
 			}
 		}
 
@@ -113,4 +113,13 @@ class CombatState extends FlxState
 			_level.createMoveGrid(_selectedUnit);
 		}
 	}
+
+	private function performAction(a:Action):Void {
+		if (a.type == Action.MOVE) {
+			
+		}
+	}
+
+	// private function entityById(id:Int):Entity {
+	// }
 }

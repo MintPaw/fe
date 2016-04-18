@@ -8,6 +8,9 @@ import openfl.*;
 
 class Entity extends FlxSpriteGroup
 {
+	public static var ID_COUNTER:Int = 0;
+
+	public var id:Int = ID_COUNTER++;
 	public var hp:Int = 100;
 	public var location:FlxPoint = new FlxPoint();
 	public var attackable:Bool = false;
