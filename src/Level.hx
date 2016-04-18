@@ -113,7 +113,12 @@ class Level
 	public function findPath(goal:FlxPoint):Array<FlxPoint> {
 		var current:FlxPoint = new FlxPoint();
 
-		for (p in _cameFromGraph.keys()) if (goal.equals(p)) current.copyFrom(p);
+		for (p in _cameFromGraph.keys()) {
+			if (goal.equals(p)) {
+				current = p;
+				break;
+			}
+		}
 
 		var path:Array<FlxPoint> = [current];
 		while (!current.equals(_startGraph)) {
