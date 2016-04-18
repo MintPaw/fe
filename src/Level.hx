@@ -56,13 +56,8 @@ class Level
 			return a;
 		}
 
-		function pointsEqiv(p1:FlxPoint, p2:FlxPoint):Bool {
-			if (p1.x == p2.x && p1.y == p2.y) return true;
-			return false;
-		}
-
 		function isVisited(point:FlxPoint, map:Map<FlxPoint, FlxPoint>):Bool {
-			for (p in map.keys()) if (pointsEqiv(point, p)) return true;
+			for (p in map.keys()) if (point.equals(p)) return true;
 			return false;
 		}
 

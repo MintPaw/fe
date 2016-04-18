@@ -87,10 +87,7 @@ class CombatState extends FlxState
 
 		if (_state == "select") {
 			_cursor.moveTo(cast nextTile.x, cast nextTile.y);
-			if (Input.map.justRelZ) {
-				var u:Unit = findUnitOn(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y);
-				if (u != null) selectUnit(u);
-			}
+			if (Input.map.justRelZ) selectUnit(findUnitOn(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y));
 		}
 	}
 
@@ -100,6 +97,7 @@ class CombatState extends FlxState
 	}
 
 	private function selectUnit(unit:Unit):Void {
+		if (unit == null) return;
 		_selectedUnit = unit;
 		_menu = new GameMenu(unit);
 		_menu.menuExit = menuExit;
@@ -115,6 +113,7 @@ class CombatState extends FlxState
 	}
 
 	private function performAction(a:Action):Void {
+		_state = "acting";
 		if (a.type == Action.MOVE) {
 			
 		}
