@@ -26,6 +26,7 @@ class CombatState extends FlxState
 	}
 
 	override public function create():Void {
+		Item;
 		_level = new Level("assets/map/test.tmx", "assets/img/tilemap.png");
 		Reg.mapWidth = _level.tilemap.widthInTiles;
 		Reg.mapHeight = _level.tilemap.heightInTiles;
@@ -81,10 +82,10 @@ class CombatState extends FlxState
 			if (Input.map.justRelZ) {
 				_level.doneMoving();
 				_menu.kill();
-				var a:Action = new Action(Action.MOVE);
+				var a:Act = new Act(Act.MOVE);
 				a.source = _selectedUnit.id;
 				a.loc.copyFrom(_cursor.selectedTile);
-				performAction(a);
+				performAct(a);
 			}
 		}
 
@@ -115,9 +116,9 @@ class CombatState extends FlxState
 		}
 	}
 
-	private function performAction(a:Action):Void {
+	private function performAct(a:Act):Void {
 		_state = "acting";
-		if (a.type == Action.MOVE) {
+		if (a.type == Act.MOVE) {
 			var path:Array<FlxPoint> = _level.findPath(a.loc);
 			var delay:Float = findUnitId(a.source).walk(path);
 			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";}, 0);

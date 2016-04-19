@@ -2,7 +2,7 @@ package ;
 
 import flixel.math.*;
 
-class Action
+class Act
 {
 	public static var NONE:Int = 0;
 	public static var MOVE:Int = 1;

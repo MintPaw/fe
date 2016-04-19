@@ -26,7 +26,7 @@ class Main extends Sprite
 	}
 
 	private function kUp(e:KeyboardEvent):Void {
-#if !flash
+#if (!flash && !html5)
 		if (e.keyCode == Keyboard.ESCAPE) Sys.exit(1);
 #end
 	}
