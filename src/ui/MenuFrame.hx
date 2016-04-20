@@ -58,6 +58,7 @@ class MenuFrame extends FlxGroup
 
 	private function cursorTo(itemNumber:Int):Void {
 		_cursor.moveToText(texts[itemNumber]);
+		hover(_cursor.selectedText);
 	}
 
 	override public function update(elapsed:Float):Void {
@@ -65,15 +66,8 @@ class MenuFrame extends FlxGroup
 
 		var selectedIndex:Int = texts.indexOf(_cursor.selectedText);
 
-		if (Input.map.justRelUp && selectedIndex > 0) {
-			cursorTo(selectedIndex - 1);
-			hover(_cursor.selectedText);
-		}
-		if (Input.map.justRelDown && selectedIndex < texts.length-1) {
-			cursorTo(selectedIndex + 1);
-			hover(_cursor.selectedText);
-		}
-
+		if (Input.map.justRelUp && selectedIndex > 0) cursorTo(selectedIndex - 1);
+		if (Input.map.justRelDown && selectedIndex < texts.length-1) cursorTo(selectedIndex + 1);
 		if (Input.map.justRelZ && _cursor.selectedText.enabled) select(_cursor.selectedText);
 		Input.falseAll();
 	}

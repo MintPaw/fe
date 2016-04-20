@@ -10,6 +10,7 @@ class GameMenu extends FlxGroup
 	private var _itemId:Int;
 	private var _actionId:Int;
 	private var _frames:Array<MenuFrame>;
+	private var _currentFrame:MenuFrame;
 
 	public var state:String = "main";
 	public var menuExit:String->Void;
@@ -23,6 +24,7 @@ class GameMenu extends FlxGroup
 		_frames = [];
 
 		var f:MenuFrame = new MenuFrame(select, hover);
+		_currentFrame = f;
 		add(f);
 
 		if (_unit.controllable) {
@@ -42,14 +44,15 @@ class GameMenu extends FlxGroup
 
 			for (item in _unit.items) {
 				if (text.text == item.name) {
-					var f:MenuFrame = new MenuFrame(select, hover);
-					for (a in item.actions) f.addItem(a.name);
-					add(f);
-
-					_frames[_frames.length-1].kill();
-					_frames.push(f);
 					_itemId = item.id;
 					state = "item";
+
+					var f:MenuFrame = new MenuFrame(select, hover);
+					_currentFrame = f;
+					for (a in item.actions) f.addItem(a.name);
+					add(f);
+					_frames[_frames.length-1].kill();
+					_frames.push(f);
 					return;
 				}
 			}
@@ -58,14 +61,15 @@ class GameMenu extends FlxGroup
 		if (state == "item") {
 			for (action in _unit.items[_itemId].actions) {
 				if (text.text == action.name) {
-					var f:MenuFrame = new MenuFrame(select, hover);
-					for (p in action.patterns) f.addItem(p.name);
-					add(f);
-
-					_frames[_frames.length-1].kill();
-					_frames.push(f);
 					_actionId = _unit.items[_itemId].actions.indexOf(action);
 					state = "action";
+
+					var f:MenuFrame = new MenuFrame(select, hover);
+					_currentFrame = f;
+					for (p in action.patterns) f.addItem(p.name);
+					add(f);
+					_frames[_frames.length-1].kill();
+					_frames.push(f);
 					return;
 				}
 			}
@@ -87,9 +91,9 @@ class GameMenu extends FlxGroup
 
 	private function hover(text:Text):Void {
 		if (state == "item") {
-			Reg.level.showPattern(_unit, _itemId, _actionId);
+			Reg.level.showPattern(_unit, _itemId, _currentFrame.texts.indexOf(text));
 		} else if (state == "action") {
-			Reg.level.showPattern(_unit, _actionId, _itemId, _frames[_frames.length-1].texts.indexOf(text));
+			Reg.level.showPattern(_unit, _itemId, _actionId, _currentFrame.texts.indexOf(text));
 		}
 	}
 

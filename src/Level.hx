@@ -15,7 +15,6 @@ class Level
 {
 	public var tilemap:FlxTilemap = new FlxTilemap();
 	public var moveGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
-	public var patternGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
 
 	public var playerSpawn:FlxPoint = new FlxPoint();
 	public var validMovePoints:Array<FlxPoint> = [];
@@ -140,15 +139,18 @@ class Level
 	}
 
 	public function showPattern(unit:Unit, itemId:Int, actionId:Int, patternIndex:Int=-1) {
+		// trace(unit, itemId, actionId, patternIndex);
+		var patterns:Array<Pattern> = unit.items[itemId].actions[actionId].patterns;
+
 		if (patternIndex == -1) {
-			// all
+			for (i in 0...patterns.length) addPattern(unit, patterns[i]);
 		} else {
-			addPattern(unit, unit.items[itemId].actions[actionId].patterns[patternIndex]);
+			doneMoving();
+			addPattern(unit, patterns[patternIndex]);
 		}
 	}
 
 	private function addPattern(unit:Unit, pattern:Pattern):Void {
-		doneMoving();
 		for (p in pattern.grid) {
 			var tile:FlxSprite = moveGrid.recycle(FlxSprite);
 			tile.makeGraphic(Reg.TILE_SIZE, Reg.TILE_SIZE, 0x88FF0000);
