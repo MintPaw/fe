@@ -17,8 +17,11 @@ class MenuFrame extends FlxGroup
 	private var _bgPad:FlxPoint = new FlxPoint(50, 10);
 	private var _textPad:FlxPoint = new FlxPoint(10, 10);
 
-	public function new() {
+	public function new(select:Text->Void, hover:Text->Void) {
 		super();
+
+		this.select = select;
+		this.hover = hover;
 
 		_texts = [];
 
