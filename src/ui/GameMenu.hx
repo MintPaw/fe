@@ -15,6 +15,7 @@ class GameMenu extends FlxGroup
 	public var menuExit:String->Void;
 	public var enabled:Bool = true;
 	public var hidden:Bool = false;
+	public var act:Act;
 
 	public function new(unit:Unit) {
 		super();
@@ -73,8 +74,12 @@ class GameMenu extends FlxGroup
 		if (state == "action") {
 			for (pattern in _unit.items[_itemId].actions[_actionId].patterns) {
 				if (text.text == pattern.name) {
-					// var act:Act = new Act(Act.ITEM_ACTION);
-					// act.unit = _unit.id
+					act = new Act(Act.ITEM_ACTION);
+					act.unit = _unit.id;
+					act.item = _itemId;
+					act.action = _actionId;
+					act.pattern = _unit.items[_itemId].actions[_actionId].patterns.indexOf(pattern);
+					menuExit("item action");
 				}
 			}
 		}

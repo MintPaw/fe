@@ -115,6 +115,13 @@ class CombatState extends FlxState
 		if (_state == "move") {
 			_level.createMoveGrid(_selectedUnit);
 		}
+
+		if (_state == "item action") {
+			var a:Act = _menu.act;
+			trace(a.unit, a.item, a.action, a.pattern);
+			_menu.kill();
+			remove(_menu);
+		}
 	}
 
 	private function performAct(a:Act):Void {
