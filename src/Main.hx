@@ -10,6 +10,7 @@ class Main extends Sprite
 	
 	public function new() {
 		super();
+		Reg.init();
 
 		var f:FlxGame = new FlxGame(stage.stageWidth, stage.stageHeight, MainState, 1, 60, 60, true, false);
 		addChild(f);

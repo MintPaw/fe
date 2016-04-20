@@ -26,7 +26,6 @@ class CombatState extends FlxState
 	}
 
 	override public function create():Void {
-		Item;
 		_level = new Level("assets/map/test.tmx", "assets/img/tilemap.png");
 		Reg.mapWidth = _level.tilemap.widthInTiles;
 		Reg.mapHeight = _level.tilemap.heightInTiles;
