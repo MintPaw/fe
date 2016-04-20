@@ -8,10 +8,10 @@ class MenuFrame extends FlxGroup
 {
 	public var select:Text->Void;
 	public var hover:Text->Void;
+	public var texts:Array<Text>;
 	public var enabled:Bool = true;
 
 	private var _bg:FlxSprite;
-	private var _texts:Array<Text>;
 	private var _cursor:Cursor;
 
 	private var _bgPad:FlxPoint = new FlxPoint(50, 10);
@@ -23,7 +23,7 @@ class MenuFrame extends FlxGroup
 		this.select = select;
 		this.hover = hover;
 
-		_texts = [];
+		texts = [];
 
 		var frameWidth:Int = Std.int(FlxG.width * 0.25);
 		var frameHeight:Int = Std.int(FlxG.height * 0.66);
@@ -46,27 +46,34 @@ class MenuFrame extends FlxGroup
 		t.width = _bg.width - _textPad.x * 2;
 		t.text = s;
 		t.x = _bg.x + _textPad.x;
-		t.y = _bg.y + _textPad.y + (_texts.length * (t.height + 10));
+		t.y = _bg.y + _textPad.y + (texts.length * (t.height + 10));
 		t.enabled = enabled;
 		t.blit();
 		add(t);
 
-		_texts.push(t);
+		texts.push(t);
 
-		if (_texts.length == 1) cursorTo(0);
+		if (texts.length == 1) cursorTo(0);
 	}
 
 	private function cursorTo(itemNumber:Int):Void {
-		_cursor.moveToText(_texts[itemNumber]);
+		_cursor.moveToText(texts[itemNumber]);
 	}
 
 	override public function update(elapsed:Float):Void {
 		super.update(elapsed);
 
-		var selectedIndex:Int = _texts.indexOf(_cursor.selectedText);
+		var selectedIndex:Int = texts.indexOf(_cursor.selectedText);
 
-		if (Input.map.justRelUp && selectedIndex > 0) cursorTo(selectedIndex - 1);
-		if (Input.map.justRelDown && selectedIndex < _texts.length-1) cursorTo(selectedIndex + 1);
+		if (Input.map.justRelUp && selectedIndex > 0) {
+			cursorTo(selectedIndex - 1);
+			hover(_cursor.selectedText);
+		}
+		if (Input.map.justRelDown && selectedIndex < texts.length-1) {
+			cursorTo(selectedIndex + 1);
+			hover(_cursor.selectedText);
+		}
+
 		if (Input.map.justRelZ && _cursor.selectedText.enabled) select(_cursor.selectedText);
 		Input.falseAll();
 	}

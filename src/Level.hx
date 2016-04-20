@@ -9,11 +9,13 @@ import flixel.graphics.*;
 import flixel.graphics.frames.*;
 import flixel.addons.editors.tiled.*;
 import openfl.*;
+import Item;
 
 class Level
 {
 	public var tilemap:FlxTilemap = new FlxTilemap();
 	public var moveGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
+	public var patternGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
 
 	public var playerSpawn:FlxPoint = new FlxPoint();
 	public var validMovePoints:Array<FlxPoint> = [];
@@ -135,6 +137,24 @@ class Level
 
 	public function doneMoving():Void {
 		for (m in moveGrid) m.kill();
-		moveGrid.kill();
+	}
+
+	public function showPattern(unit:Unit, itemId:Int, actionId:Int, patternIndex:Int=-1) {
+		if (patternIndex == -1) {
+			// all
+		} else {
+			addPattern(unit, unit.items[itemId].actions[actionId].patterns[patternIndex]);
+		}
+	}
+
+	private function addPattern(unit:Unit, pattern:Pattern):Void {
+		doneMoving();
+		for (p in pattern.grid) {
+			var tile:FlxSprite = moveGrid.recycle(FlxSprite);
+			tile.makeGraphic(Reg.TILE_SIZE, Reg.TILE_SIZE, 0x88FF0000);
+			tile.x = (unit.location.x + p.x) * Reg.TILE_SIZE;
+			tile.y = (unit.location.y + p.y) * Reg.TILE_SIZE;
+			moveGrid.add(tile);
+		}
 	}
 }

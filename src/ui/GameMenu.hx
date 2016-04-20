@@ -86,6 +86,11 @@ class GameMenu extends FlxGroup
 	}
 
 	private function hover(text:Text):Void {
+		if (state == "item") {
+			Reg.level.showPattern(_unit, _itemId, _actionId);
+		} else if (state == "action") {
+			Reg.level.showPattern(_unit, _actionId, _itemId, _frames[_frames.length-1].texts.indexOf(text));
+		}
 	}
 
 	override public function update(elapsed:Float):Void {
