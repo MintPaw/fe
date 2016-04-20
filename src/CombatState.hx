@@ -35,6 +35,7 @@ class CombatState extends FlxState
 		_unitGroup = new FlxTypedGroup<Unit>();
 
 		var p = new Unit();
+		p.getNewItem(0);
 		p.controllable = true;
 		p.warp(cast _level.playerSpawn.x, cast _level.playerSpawn.y);
 		_unitGroup.add(p);

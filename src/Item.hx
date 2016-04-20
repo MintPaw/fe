@@ -44,8 +44,7 @@ class Item
 	}
 
 	public function clone():Item {
-		//todo: no
-		return this;
+		return new Item(name, description, id, expTillNext, nextId, actions);
 	}
 
 	public static function init():Void {

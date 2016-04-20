@@ -51,7 +51,16 @@ class Unit extends FlxSpriteGroup
 		return delayTime*path.length;
 	}
 
-	public function reloadLoc():Void {
+	public function getNewItem(id:Int):Void {
+		for (i in Item.items) {
+			if (i.id == id) {
+				items.push(i.clone());
+				break;
+			}
+		}
+	}
+
+	private function reloadLoc():Void {
 		location.set(Std.int(x / Reg.TILE_SIZE), Std.int(y / Reg.TILE_SIZE));
 	}
 }
