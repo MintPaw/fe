@@ -11,6 +11,7 @@ class IntPoint implements Prioritizable implements Hashable {
 	public var y:Int;
 
 	public function new(x:Float=0, y:Float=0) {
+		key = HashKey.next();
 		set(x, y);
 	}
 

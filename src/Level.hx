@@ -11,6 +11,7 @@ import flixel.addons.editors.tiled.*;
 import openfl.*;
 import de.polygonal.ds.LinkedQueue;
 import de.polygonal.ds.PriorityQueue;
+import de.polygonal.ds.HashTable;
 import Item;
 
 class Level
@@ -21,8 +22,9 @@ class Level
 	public var playerSpawn:FlxPoint = new FlxPoint();
 	public var validMovePoints:Array<IntPoint> = [];
 
+	private var _allPoints:Array<IntPoint> = [];
 	private var _startGraph:IntPoint = new IntPoint();
-	private var _cameFromGraph:Map<IntPoint, IntPoint> = new Map();
+	private var _cameFromGraph:HashTable<IntPoint, IntPoint> = new HashTable(128);
 
 	public function new(data:String, graphicPath:String) {
 		var tiledMap:TiledMap = new TiledMap(data);
@@ -36,31 +38,28 @@ class Level
 		for (obj in cast(tiledMap.getLayer("obj"), TiledObjectLayer).objects) {
 			if (obj.name == "playerSpawn") playerSpawn.set(obj.x/Reg.TILE_SIZE, obj.y/Reg.TILE_SIZE);
 		}
+
+		for (i in 0...tilemap.widthInTiles)
+			for (j in 0...tilemap.heightInTiles)
+				_allPoints.push(new IntPoint(i, j));
 	}
 
 	public function createMoveGrid(unit:Unit):Void {
-		// Destroy old graph
-		for (p in _cameFromGraph.keys()) {
-			// _cameFromGraph.get(p).put();
-			// p.put();
-		}
+		_cameFromGraph.clear();
 
 		// Create graph
 		function getConnected(point:IntPoint):Array<IntPoint> {
 			var a:Array<IntPoint> = [];
 			var possiblePoints:Array<IntPoint> = [
-				new IntPoint(point.x - 1, point.y), 
-				new IntPoint(point.x + 1, point.y),
-				new IntPoint(point.x, point.y - 1),
-				new IntPoint(point.x, point.y + 1)
+				getPoint(point.x - 1, point.y), 
+				getPoint(point.x + 1, point.y),
+				getPoint(point.x, point.y - 1),
+				getPoint(point.x, point.y + 1)
 			];
 
 			for (p in possiblePoints) {
 				if (
-						p.x >= 0 &&
-						p.x <= tilemap.widthInTiles - 1 &&
-						p.y >= 0 &&
-						p.y <= tilemap.heightInTiles - 1 &&
+						p != null &&
 						p.x >= unit.location.x - unit.ap &&
 						p.x <= unit.location.x + unit.ap &&
 						p.y >= unit.location.y - unit.ap &&
@@ -70,16 +69,13 @@ class Level
 			return a;
 		}
 
-		function isVisited(point:IntPoint, map:Map<IntPoint, IntPoint>):Bool {
-			for (p in map.keys()) if (point.equals(p)) return true;
-			return false;
-		}
-
-		_startGraph = new IntPoint(unit.location.x, unit.location.y);
+		_startGraph = getPoint(unit.location.x, unit.location.y);
 		var frontier:LinkedQueue<IntPoint> = new LinkedQueue<IntPoint>();
+		// var frontier:PriorityQueue<IntPoint> = new PriorityQueue<IntPoint>();
 		frontier.enqueue(_startGraph);
+		// frontier.reprioritize(_startGraph, 0);
 
-		// var costSoFar:Map<FlxPoint, Int> = new Map();
+		// var costSoFar:Map<IntPoint, Int> = new Map();
 		// costSoFar.set(_startGraph, 0);
 		
 		_cameFromGraph.set(_startGraph, null);
@@ -87,7 +83,8 @@ class Level
 			var current:IntPoint = frontier.dequeue();
 
 			for (next in getConnected(current)) {
-				if (!isVisited(next, _cameFromGraph)) {
+				// var newCost:Int = getVal(current, costSoFar) + _cameFromGraph.
+				if (!_cameFromGraph.hasKey(next)) {
 					frontier.enqueue(next);
 					_cameFromGraph.set(next, current);
 				}
@@ -115,19 +112,11 @@ class Level
 			moveGrid.add(tile);
 		}
 
-		// todo: test free
 		// todo: correct ap distance
 	}
 
 	public function findPath(goal:IntPoint):Array<IntPoint> {
-		var current:IntPoint = new IntPoint();
-
-		for (p in _cameFromGraph.keys()) {
-			if (goal.equals(p)) {
-				current = p;
-				break;
-			}
-		}
+		var current:IntPoint = getPoint(goal.x, goal.y);
 
 		var path:Array<IntPoint> = [current];
 		while (!current.equals(_startGraph)) {
@@ -139,12 +128,16 @@ class Level
 		return path;
 	}
 
+		private function getPoint(x:Float, y:Float):IntPoint {
+			for (p in _allPoints) if (p.x == Std.int(x) && p.y == Std.int(y)) return p;
+			return null;
+		}
+
 	public function doneMoving():Void {
 		for (m in moveGrid) m.kill();
 	}
 
 	public function showPattern(unit:Unit, itemId:Int, actionId:Int, patternIndex:Int=-1) {
-		// trace(unit, itemId, actionId, patternIndex);
 		var patterns:Array<Pattern> = unit.items[itemId].actions[actionId].patterns;
 
 		if (patternIndex == -1) {
