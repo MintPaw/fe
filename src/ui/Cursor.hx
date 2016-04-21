@@ -5,15 +5,15 @@ import flixel.math.*;
 
 class Cursor extends FlxSprite
 {
-	public static var align:FlxPoint = new FlxPoint(-5, 7);
+	public static var align:IntPoint = new IntPoint(-5, 7);
 
-	public var selectedTile:FlxPoint;
+	public var selectedTile:IntPoint;
 	public var selectedText:Text = null;
 	
 	public function new() {
 		super();
 
-		selectedTile = new FlxPoint();
+		selectedTile = new IntPoint();
 
 		loadGraphic("assets/img/cursor.png");
 	}

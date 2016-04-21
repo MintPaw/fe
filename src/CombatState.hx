@@ -63,12 +63,12 @@ class CombatState extends FlxState
 
 		if (_menu != null && _menu.enabled) return;
 
-		var nextTile:FlxPoint = new FlxPoint();
-		var oldTile:FlxPoint = new FlxPoint();
+		var nextTile:IntPoint = new IntPoint();
+		var oldTile:IntPoint = new IntPoint();
 
 		if (_state == "select" || _state == "move") {
-			nextTile.copyFrom(_cursor.selectedTile);
-			oldTile.copyFrom(_cursor.selectedTile);
+			nextTile.copy(_cursor.selectedTile);
+			oldTile.copy(_cursor.selectedTile);
 			if (Input.map.justRelLeft) nextTile.set(_cursor.selectedTile.x - 1, _cursor.selectedTile.y);
 			if (Input.map.justRelRight) nextTile.set(_cursor.selectedTile.x + 1, _cursor.selectedTile.y);
 			if (Input.map.justRelUp) nextTile.set(_cursor.selectedTile.x, _cursor.selectedTile.y - 1);
@@ -86,7 +86,7 @@ class CombatState extends FlxState
 				remove(_menu);
 				var a:Act = new Act(Act.MOVE);
 				a.unit = _selectedUnit.id;
-				a.loc.copyFrom(_cursor.selectedTile);
+				a.loc.copy(_cursor.selectedTile);
 				performAct(a);
 			}
 		}
@@ -129,7 +129,7 @@ class CombatState extends FlxState
 	private function performAct(a:Act):Void {
 		_state = "acting";
 		if (a.type == Act.MOVE) {
-			var path:Array<FlxPoint> = _level.findPath(a.loc);
+			var path:Array<IntPoint> = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
 			var delay:Float = findUnitId(a.unit).walk(path);
 			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";}, 0);
 		}

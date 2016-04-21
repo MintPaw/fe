@@ -18,6 +18,7 @@
 	<haxelib name="flixel" />
 	<haxelib name="flixel-addons" />
 	<haxelib name="mintDebugger" />
+	<haxelib name="polygonal-ds" />
 
 	
 	<assets path="assets" />

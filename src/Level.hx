@@ -9,6 +9,8 @@ import flixel.graphics.*;
 import flixel.graphics.frames.*;
 import flixel.addons.editors.tiled.*;
 import openfl.*;
+import de.polygonal.ds.LinkedQueue;
+import de.polygonal.ds.PriorityQueue;
 import Item;
 
 class Level
@@ -17,10 +19,10 @@ class Level
 	public var moveGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
 
 	public var playerSpawn:FlxPoint = new FlxPoint();
-	public var validMovePoints:Array<FlxPoint> = [];
+	public var validMovePoints:Array<IntPoint> = [];
 
-	private var _startGraph:FlxPoint = FlxPoint.get();
-	private var _cameFromGraph:Map<FlxPoint, FlxPoint> = new Map();
+	private var _startGraph:IntPoint = new IntPoint();
+	private var _cameFromGraph:Map<IntPoint, IntPoint> = new Map();
 
 	public function new(data:String, graphicPath:String) {
 		var tiledMap:TiledMap = new TiledMap(data);
@@ -39,18 +41,18 @@ class Level
 	public function createMoveGrid(unit:Unit):Void {
 		// Destroy old graph
 		for (p in _cameFromGraph.keys()) {
-			_cameFromGraph.get(p).put();
-			p.put();
+			// _cameFromGraph.get(p).put();
+			// p.put();
 		}
 
 		// Create graph
-		function getConnected(point:FlxPoint):Array<FlxPoint> {
-			var a:Array<FlxPoint> = [];
-			var possiblePoints:Array<FlxPoint> = [
-				FlxPoint.get(point.x - 1, point.y), 
-				FlxPoint.get(point.x + 1, point.y),
-				FlxPoint.get(point.x, point.y - 1),
-				FlxPoint.get(point.x, point.y + 1)
+		function getConnected(point:IntPoint):Array<IntPoint> {
+			var a:Array<IntPoint> = [];
+			var possiblePoints:Array<IntPoint> = [
+				new IntPoint(point.x - 1, point.y), 
+				new IntPoint(point.x + 1, point.y),
+				new IntPoint(point.x, point.y - 1),
+				new IntPoint(point.x, point.y + 1)
 			];
 
 			for (p in possiblePoints) {
@@ -68,22 +70,25 @@ class Level
 			return a;
 		}
 
-		function isVisited(point:FlxPoint, map:Map<FlxPoint, FlxPoint>):Bool {
+		function isVisited(point:IntPoint, map:Map<IntPoint, IntPoint>):Bool {
 			for (p in map.keys()) if (point.equals(p)) return true;
 			return false;
 		}
 
-		_startGraph = FlxPoint.get(Std.int(unit.location.x), Std.int(unit.location.y));
-		var frontier:Array<FlxPoint> = [];
-		frontier.push(_startGraph);
+		_startGraph = new IntPoint(unit.location.x, unit.location.y);
+		var frontier:LinkedQueue<IntPoint> = new LinkedQueue<IntPoint>();
+		frontier.enqueue(_startGraph);
+
+		// var costSoFar:Map<FlxPoint, Int> = new Map();
+		// costSoFar.set(_startGraph, 0);
 		
 		_cameFromGraph.set(_startGraph, null);
-		while (frontier.length > 0) {
-			var current:FlxPoint = frontier.shift();
+		while (frontier.size > 0) {
+			var current:IntPoint = frontier.dequeue();
 
 			for (next in getConnected(current)) {
 				if (!isVisited(next, _cameFromGraph)) {
-					frontier.push(next);
+					frontier.enqueue(next);
 					_cameFromGraph.set(next, current);
 				}
 			}
@@ -92,7 +97,7 @@ class Level
 		// Walk graph
 		for (p in _cameFromGraph.keys()) {
 			var steps:Int = 0;
-			var nextFrom:FlxPoint = p;
+			var nextFrom:IntPoint = p;
 
 			while (nextFrom != null) {
 				nextFrom = _cameFromGraph.get(nextFrom);
@@ -114,8 +119,8 @@ class Level
 		// todo: correct ap distance
 	}
 
-	public function findPath(goal:FlxPoint):Array<FlxPoint> {
-		var current:FlxPoint = new FlxPoint();
+	public function findPath(goal:IntPoint):Array<IntPoint> {
+		var current:IntPoint = new IntPoint();
 
 		for (p in _cameFromGraph.keys()) {
 			if (goal.equals(p)) {
@@ -124,7 +129,7 @@ class Level
 			}
 		}
 
-		var path:Array<FlxPoint> = [current];
+		var path:Array<IntPoint> = [current];
 		while (!current.equals(_startGraph)) {
 			current = _cameFromGraph.get(current);
 			path.push(current);

@@ -15,7 +15,7 @@ class Act
 	public var action:Int;
 	public var pattern:Int;
 
-	public var loc:FlxPoint = new FlxPoint();
+	public var loc:IntPoint = new IntPoint();
 
 	public function new(type:Int) {
 		this.type = type;

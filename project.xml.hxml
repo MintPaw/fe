@@ -17,8 +17,13 @@
 --macro keep('IntIterator')
 -cp /home/mintpaw/tools/haxelib/hscript/2,0,7
 -D hscript=2.0.7
+-cp /home/mintpaw/tools/haxelib/polygonal-ds/git/src
+-D polygonal-ds=2.0.0-beta
+-cp /home/mintpaw/tools/haxelib/polygonal-printf/1,0,2-beta
+-D polygonal-printf=1.0.2-beta
 -cp src
 -cp /home/mintpaw/tools/haxelib/openfl/3,6,1/extern
+-D FLX_NO_GAMEPAD
 -D openfl-next
 -D tools=2.9.1
 -D no-compilation

@@ -21,7 +21,7 @@ class Unit extends FlxSpriteGroup
 	public var id:Int = UNIT_ID_COUNTER++;
 	public var hp:Int = 100;
 	public var ap:Int = 10;
-	public var location:FlxPoint = new FlxPoint();
+	public var location:IntPoint = new IntPoint();
 	public var dead:Bool = false;
 	public var attackable:Bool = true;
 	public var controllable:Bool = false;
@@ -39,7 +39,7 @@ class Unit extends FlxSpriteGroup
 		this.y = y * Reg.TILE_SIZE;
 	}
 
-	public function walk(path:Array<FlxPoint>):Float {
+	public function walk(path:Array<IntPoint>):Float {
 		var moveTime:Float = 0.1;
 		var delayTime:Float = 0.2;
 
