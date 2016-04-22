@@ -23,7 +23,7 @@ class Level
 	public var validMovePoints:Array<IntPoint> = [];
 
 	private var _allPoints:Array<IntPoint> = [];
-	private var _startGraph:IntPoint = new IntPoint();
+	private var _startGraph:IntPoint;
 	private var _cameFromGraph:HashTable<IntPoint, IntPoint> = new HashTable(128);
 
 	public function new(data:String, graphicPath:String) {
@@ -45,6 +45,7 @@ class Level
 	}
 
 	public function createMoveGrid(unit:Unit):Void {
+		validMovePoints = [];
 		_cameFromGraph.clear();
 
 		// Create graph
@@ -70,39 +71,31 @@ class Level
 		}
 
 		_startGraph = getPoint(unit.location.x, unit.location.y);
-		var frontier:LinkedQueue<IntPoint> = new LinkedQueue<IntPoint>();
-		// var frontier:PriorityQueue<IntPoint> = new PriorityQueue<IntPoint>();
+		var frontier:PriorityQueue<IntPoint> = new PriorityQueue<IntPoint>(128);
+		_startGraph.priority = 0;
 		frontier.enqueue(_startGraph);
-		// frontier.reprioritize(_startGraph, 0);
 
-		// var costSoFar:Map<IntPoint, Int> = new Map();
-		// costSoFar.set(_startGraph, 0);
+		var costSoFar:HashTable<IntPoint, Int> = new HashTable(128);
+		costSoFar.set(_startGraph, 0);
 		
 		_cameFromGraph.set(_startGraph, null);
 		while (frontier.size > 0) {
-			var current:IntPoint = frontier.dequeue();
+			var current:IntPoint = frontier.back();
+			frontier.remove(current);
 
 			for (next in getConnected(current)) {
-				// var newCost:Int = getVal(current, costSoFar) + _cameFromGraph.
-				if (!_cameFromGraph.hasKey(next)) {
-					frontier.enqueue(next);
-					_cameFromGraph.set(next, current);
+				var newCost:Int = costSoFar.get(current) + getCost(current);
+				if ((!costSoFar.hasKey(next) || newCost < costSoFar.get(next)) && newCost <= 10) {
+					costSoFar.set(next, newCost);
+					next.priority = newCost;
+					if (!frontier.contains(next)) frontier.enqueue(next);
+					if (_cameFromGraph.hasKey(next)) _cameFromGraph.remap(next, current) else _cameFromGraph.set(next, current);
 				}
 			}
 		}
 
 		// Walk graph
-		for (p in _cameFromGraph.keys()) {
-			var steps:Int = 0;
-			var nextFrom:IntPoint = p;
-
-			while (nextFrom != null) {
-				nextFrom = _cameFromGraph.get(nextFrom);
-				steps++;
-			}
-
-			if (steps <= unit.ap) validMovePoints.push(p);
-		}
+		validMovePoints = _cameFromGraph.toKeyArray();
 
 		for (p in validMovePoints) {
 			var tile:FlxSprite = moveGrid.recycle(FlxSprite);
@@ -128,10 +121,18 @@ class Level
 		return path;
 	}
 
-		private function getPoint(x:Float, y:Float):IntPoint {
-			for (p in _allPoints) if (p.x == Std.int(x) && p.y == Std.int(y)) return p;
-			return null;
-		}
+	private function getPoint(x:Float, y:Float):IntPoint {
+		for (p in _allPoints) if (p.x == Std.int(x) && p.y == Std.int(y)) return p;
+		return null;
+	}
+
+	private function getCost(tile:IntPoint):Int {
+		if (tilemap.getTile(tile.x, tile.y) == 1) return 1;
+		if (tilemap.getTile(tile.x, tile.y) == 2) return 2;
+		if (tilemap.getTile(tile.x, tile.y) == 3) return 3;
+		if (tilemap.getTile(tile.x, tile.y) == 4) return 4;
+		return 999;
+	}
 
 	public function doneMoving():Void {
 		for (m in moveGrid) m.kill();
