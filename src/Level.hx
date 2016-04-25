@@ -138,8 +138,8 @@ class Level
 		for (m in moveGrid) m.kill();
 	}
 
-	public function showPattern(unit:Unit, itemId:Int, actionId:Int, patternIndex:Int=-1) {
-		var patterns:Array<Pattern> = unit.items[itemId].actions[actionId].patterns;
+	public function showPattern(unit:Unit, action:Action, patternIndex:Int=-1) {
+		var patterns:Array<Pattern> = action.patterns;
 
 		if (patternIndex == -1) {
 			for (i in 0...patterns.length) addPattern(unit, patterns[i]);

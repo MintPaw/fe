@@ -7,8 +7,8 @@ import Item;
 class GameMenu extends FlxGroup
 {
 	private var _unit:Unit;
-	private var _itemId:Int;
-	private var _actionId:Int;
+	private var _item:Item;
+	private var _action:Action;
 	private var _frames:Array<MenuFrame>;
 	private var _currentFrame:MenuFrame;
 
@@ -44,7 +44,7 @@ class GameMenu extends FlxGroup
 
 			for (item in _unit.items) {
 				if (text.text == item.name) {
-					_itemId = item.id;
+					_item = item;
 					state = "item";
 
 					var f:MenuFrame = new MenuFrame(select, hover);
@@ -59,9 +59,9 @@ class GameMenu extends FlxGroup
 		}
 
 		if (state == "item") {
-			for (action in _unit.items[_itemId].actions) {
+			for (action in _item.actions) {
 				if (text.text == action.name) {
-					_actionId = _unit.items[_itemId].actions.indexOf(action);
+					_action = action;
 					state = "action";
 
 					var f:MenuFrame = new MenuFrame(select, hover);
@@ -76,13 +76,13 @@ class GameMenu extends FlxGroup
 		}
 
 		if (state == "action") {
-			for (pattern in _unit.items[_itemId].actions[_actionId].patterns) {
+			for (pattern in _action.patterns) {
 				if (text.text == pattern.name) {
 					act = new Act(Act.ITEM_ACTION);
 					act.unit = _unit.id;
-					act.item = _itemId;
-					act.action = _actionId;
-					act.pattern = _unit.items[_itemId].actions[_actionId].patterns.indexOf(pattern);
+					act.item = _unit.items.indexOf(_item);
+					act.action = _item.actions.indexOf(_action);
+					act.pattern = _action.patterns.indexOf(pattern);
 					menuExit("item action");
 				}
 			}
@@ -91,9 +91,9 @@ class GameMenu extends FlxGroup
 
 	private function hover(text:Text):Void {
 		if (state == "item") {
-			Reg.level.showPattern(_unit, _itemId, _currentFrame.texts.indexOf(text));
+			Reg.level.showPattern(_unit, _item.actions[_currentFrame.texts.indexOf(text)]);
 		} else if (state == "action") {
-			Reg.level.showPattern(_unit, _itemId, _actionId, _currentFrame.texts.indexOf(text));
+			Reg.level.showPattern(_unit, _action, _currentFrame.texts.indexOf(text));
 		}
 	}
 
