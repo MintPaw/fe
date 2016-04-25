@@ -131,7 +131,7 @@ class CombatState extends FlxState
 		if (a.type == Act.MOVE) {
 			var path:Array<IntPoint> = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
 			var delay:Float = findUnitId(a.unit).walk(path);
-			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";}, 0);
+			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";});
 		}
 	}
 
