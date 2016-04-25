@@ -84,8 +84,8 @@ class Level
 			frontier.remove(current);
 
 			for (next in getConnected(current)) {
-				var newCost:Int = costSoFar.get(current) + getCost(current);
-				if ((!costSoFar.hasKey(next) || newCost < costSoFar.get(next)) && newCost <= 10) {
+				var newCost:Int = costSoFar.get(current) + getCost(next);
+				if ((!costSoFar.hasKey(next) || newCost < costSoFar.get(next)) && newCost <= unit.ap) {
 					costSoFar.set(next, newCost);
 					next.priority = newCost;
 					if (!frontier.contains(next)) frontier.enqueue(next);
@@ -117,6 +117,7 @@ class Level
 			path.push(current);
 		}
 
+		path.pop();
 		path.reverse();
 		return path;
 	}
@@ -131,6 +132,7 @@ class Level
 		if (tilemap.getTile(tile.x, tile.y) == 2) return 2;
 		if (tilemap.getTile(tile.x, tile.y) == 3) return 3;
 		if (tilemap.getTile(tile.x, tile.y) == 4) return 4;
+		if (tilemap.getTile(tile.x, tile.y) == 5) return 5;
 		return 999;
 	}
 
