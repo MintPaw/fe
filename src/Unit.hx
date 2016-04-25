@@ -6,6 +6,7 @@ import flixel.group.*;
 import flixel.math.*;
 import flixel.tweens.*;
 import openfl.*;
+import Level;
 
 class Unit extends FlxSpriteGroup
 {
@@ -39,16 +40,19 @@ class Unit extends FlxSpriteGroup
 		this.y = y * Reg.TILE_SIZE;
 	}
 
-	public function walk(path:Array<IntPoint>):Float {
+	public function walk(path:Path):Float {
 		var moveTime:Float = 0.1;
 		var delayTime:Float = 0.2;
 
-		for (i in 0...path.length) {
-			FlxTween.tween(this, {x:path[i].x * Reg.TILE_SIZE, y:path[i].y * Reg.TILE_SIZE}, moveTime,
-					{startDelay:delayTime*i, onComplete: i == path.length-1 ? function(t:FlxTween):Void{reloadLoc();}:null});
+		for (i in 0...path.path.length) {
+			FlxTween.tween(this, {x:path.path[i].x * Reg.TILE_SIZE, y:path.path[i].y * Reg.TILE_SIZE}, moveTime,
+					{startDelay:delayTime*i, onComplete: i == path.path.length-1 ?
+						function(t:FlxTween):Void{ap -= path.costs[i]; reloadLoc();} : 
+						function(t:FlxTween):Void{ap -= path.costs[i];}
+					});
 			}
 
-		return delayTime*path.length;
+		return delayTime*path.path.length;
 	}
 
 	public function getNewItem(id:Int):Void {

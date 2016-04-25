@@ -9,6 +9,7 @@ import flixel.math.*;
 import flixel.util.*;
 import flixel.tweens.*;
 import openfl.*;
+import Level;
 
 class CombatState extends FlxState
 {
@@ -129,7 +130,7 @@ class CombatState extends FlxState
 	private function performAct(a:Act):Void {
 		_state = "acting";
 		if (a.type == Act.MOVE) {
-			var path:Array<IntPoint> = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
+			var path:Path = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
 			var delay:Float = findUnitId(a.unit).walk(path);
 			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";});
 		}

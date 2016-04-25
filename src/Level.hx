@@ -108,7 +108,7 @@ class Level
 		// todo: correct ap distance
 	}
 
-	public function findPath(goal:IntPoint):Array<IntPoint> {
+	public function findPath(goal:IntPoint):Path {
 		var current:IntPoint = getPoint(goal.x, goal.y);
 
 		var path:Array<IntPoint> = [current];
@@ -119,7 +119,10 @@ class Level
 
 		path.pop();
 		path.reverse();
-		return path;
+
+		var truePath:Path = {path:path, costs:[]};
+		for (p in path) truePath.costs.push(getCost(p));
+		return truePath;
 	}
 
 	private function getPoint(x:Float, y:Float):IntPoint {
@@ -160,4 +163,9 @@ class Level
 			moveGrid.add(tile);
 		}
 	}
+}
+
+typedef Path = {
+	path:Array<IntPoint>,
+	costs:Array<Int>
 }
