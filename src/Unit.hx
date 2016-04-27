@@ -35,6 +35,8 @@ class Unit extends FlxSpriteGroup
 	public function new() {
 		super();
 		apBar = new FlxBar(0, 0, FlxBarFillDirection.LEFT_TO_RIGHT, Reg.TILE_SIZE, 4, this, "ap", 0, 10, true);
+		apBar.createColoredFilledBar(0xFF0800FF, true, 0xFF000000);
+		apBar.createColoredEmptyBar(0xFF040082, true, 0xFF000000);
 		apBar.visible = false;
 
 		mainGraphic.makeGraphic(32, 32, 0xFFFF0000);
