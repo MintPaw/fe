@@ -102,4 +102,9 @@ class GameMenu extends FlxGroup
 		super.update(elapsed);
 	}
 
+	override public function kill():Void {
+		enabled = false;
+		super.kill();
+	}
+
 }

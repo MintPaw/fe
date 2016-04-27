@@ -84,7 +84,7 @@ class CombatState extends FlxState
 			if (Input.map.justRelZ) {
 				_level.doneMoving();
 				_menu.kill();
-				remove(_menu);
+				remove(_menu, true);
 				var a:Act = new Act(Act.MOVE);
 				a.unit = _selectedUnit.id;
 				a.loc.copy(_cursor.selectedTile);
@@ -123,7 +123,7 @@ class CombatState extends FlxState
 			trace(a.unit, a.item, a.action, a.pattern);
 			performAct(a);
 			_menu.kill();
-			remove(_menu);
+			remove(_menu, true);
 		}
 	}
 
@@ -133,6 +133,12 @@ class CombatState extends FlxState
 			var path:Path = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
 			var delay:Float = findUnitId(a.unit).walk(path);
 			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";});
+		}
+
+		if (a.type == Act.ITEM_ACTION) {
+			_level.doneMoving();
+			FlxG.camera.flash(0xFFFFFFFF, 1);
+			new FlxTimer().start(1, function(t:FlxTimer):Void{_state = "select";});
 		}
 	}
 
