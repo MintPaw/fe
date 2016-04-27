@@ -1,21 +1,9 @@
 package;
 
 import flixel.math.*;
-
-typedef Action = {
-	name:String,
-	description:String,
-	patterns:Array<Pattern>,
-	damage:Int,
-
-	?accuracy:Int,
-	?splash:Bool
-}
-
-typedef Pattern = {
-	name:String,
-	grid:Array<FlxPoint>
-}
+import yaml.*;
+import yaml.util.ObjectMap;
+import openfl.*;
 
 class Item
 {
@@ -31,56 +19,62 @@ class Item
 	public var nextId:Int;
 	public var actions:Array<Action>;
 
-	public function new(name:String, description:String, id:Int, expTillNext:Int, nextId:Int, actions:Array<Action>) {
-		this.id = id;
-		this.expTillNext = expTillNext;
-		this.nextId = nextId;
-		this.actions = actions.copy();
-		this.name = name;
-		this.description = description;
+	public function new() {
 	}
 
 	public function use(action:Action):Void {
 	}
 
 	public function clone():Item {
-		return new Item(name, description, id, expTillNext, nextId, actions);
+		return Reflect.copy(this);
 	}
 
 	public static function init():Void {
-		items.push(new Item(
-					"Sword",
-					"A sword.",
-					0, 100, 1, [
-					{
-						name:"Slash",
-						description:"Attack a wide area in front of you", 
-						damage:3,
-						patterns: [
-						{
-							name:"Up",
-							grid:[
-								new FlxPoint(0, -1)
-							]
-						},{
-							name:"Down",
-							grid:[
-								new FlxPoint(0, 1)
-							]
-						},{
-							name:"Left",
-							grid:[
-								new FlxPoint(-1, 0)
-							]
-						},{
-							name:"Right",
-							grid:[
-								new FlxPoint(1, 0)
-							]
-						}
-						]
+		var data:AnyObjectMap = Yaml.parse(Assets.getText("assets/info/items.yaml"));
+		var itemsList:Array<Dynamic> = data.get("items");
+
+		for (itemStruct in itemsList) {
+			var item:Item = new Item();
+			item.name = itemStruct.get("name");
+			item.id = itemStruct.get("id");
+			item.description = itemStruct.get("description");
+			item.expTillNext = itemStruct.get("expTillNext");
+			item.nextId = itemStruct.get("nextId");
+			item.actions = [];
+			for (actionStruct in cast(itemStruct.get("actions"), Array<Dynamic>)) {
+				var action:Action = {};
+				action.name = actionStruct.get("name");
+				action.description = actionStruct.get("description");
+				action.damage = actionStruct.get("damage");
+				
+				action.patterns = [];
+				for (patternStruct in cast(actionStruct.get("patterns"), Array<Dynamic>)) {
+					var p:Pattern = {};
+					p.name = patternStruct.get("name");
+					p.grid = [];
+					for (tileStruct in cast(patternStruct.get("grid"), Array<Dynamic>)) {
+						var tile:IntPoint = new IntPoint(tileStruct[0], tileStruct[1]);
+						p.grid.push(tile);
 					}
-					]));
-	}
+					action.patterns.push(p);
+				}
+				item.actions.push(action);
+			}
+			items.push(item);
+		}
 }
 
+typedef Action = {
+	?name:String,
+	?description:String,
+	?patterns:Array<Pattern>,
+	?damage:Int,
+
+	?accuracy:Int,
+	?splash:Bool
+}
+
+typedef Pattern = {
+	?name:String,
+	?grid:Array<IntPoint>
+}

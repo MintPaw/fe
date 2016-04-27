@@ -21,6 +21,8 @@
 -D polygonal-ds=2.0.0-beta
 -cp /home/mintpaw/tools/haxelib/polygonal-printf/1,0,2-beta
 -D polygonal-printf=1.0.2-beta
+-cp /home/mintpaw/tools/haxelib/yaml/1,2,1
+-D yaml=1.2.1
 -cp src
 -cp /home/mintpaw/tools/haxelib/openfl/3,6,1/extern
 -D FLX_NO_GAMEPAD

@@ -1,0 +1,19 @@
+items:
+ - name: Sword
+   id: 0
+   description: "A sword."
+   expTillNext: 100
+   nextId: 999
+   actions:
+    - name: Slash
+      description: "Attack a wide area in front of you"
+      damage: 3
+      patterns:
+       - name: "Up"
+         grid: [ [0, -1] ]
+       - name: "Right"
+         grid: [ [1, 0] ]
+       - name: "Down"
+         grid: [ [0, 1] ]
+       - name: "Left"
+         grid: [ [-1, 0] ]
