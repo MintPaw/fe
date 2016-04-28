@@ -62,6 +62,7 @@ class Item
 			}
 			items.push(item);
 		}
+	}
 }
 
 typedef Action = {
