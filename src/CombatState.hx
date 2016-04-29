@@ -33,18 +33,25 @@ class CombatState extends FlxState
 		Reg.level = _level;
 		add(_level.tilemap);
 		add(_level.moveGrid);
-		
+
 		_unitGroup = new FlxTypedGroup<Unit>();
 
-		var p = new Unit();
-		p.getNewItem(0);
-		p.controllable = true;
-		p.warp(cast _level.playerSpawn.x, cast _level.playerSpawn.y);
-		_unitGroup.add(p);
-		add(p);
+		for (u in _level.units) _unitGroup.add(cast add(u));
+
+		// var p = new Unit();
+		// p.getNewItem(0);
+		// p.controllable = true;
+		// p.warp(cast _level.playerSpawn.x, cast _level.playerSpawn.y);
+		// _unitGroup.add(p);
+		// add(p);
 
 		_cursor = new Cursor();
-		_cursor.moveTo(cast p.location.x, cast p.location.y);
+		for (u in _unitGroup) {
+			if (u.controllable) {
+				_cursor.moveTo(cast u.location.x, cast u.location.y);
+				break;
+			}
+		}
 		add(_cursor);
 
 		_state = "select";

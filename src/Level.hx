@@ -20,6 +20,7 @@ class Level
 	public var moveGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
 
 	public var playerSpawn:FlxPoint = new FlxPoint();
+	public var units:Array<Unit> = [];
 	public var validMovePoints:Array<IntPoint> = [];
 
 	private var _allPoints:Array<IntPoint> = [];
@@ -36,7 +37,11 @@ class Level
 		tilemap.loadMapFromCSV(cast(tiledMap.getLayer("main"), TiledTileLayer).csvData, tileGraphic, 32, 32, null, 1);
 
 		for (obj in cast(tiledMap.getLayer("obj"), TiledObjectLayer).objects) {
-			if (obj.name == "playerSpawn") playerSpawn.set(obj.x/Reg.TILE_SIZE, obj.y/Reg.TILE_SIZE);
+			var u:Unit = new Unit();
+			u.controllable = obj.properties.get("controllable") == "1";
+			u.name = obj.name;
+			u.warp(cast obj.x/Reg.TILE_SIZE, cast obj.y/Reg.TILE_SIZE);
+			units.push(u);
 		}
 
 		for (i in 0...tilemap.widthInTiles)

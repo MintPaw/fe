@@ -22,6 +22,7 @@ class Unit extends FlxSpriteGroup
 	public var drops:Array<Item> = [];
 	public var stats:Stats = {};
 	public var ailments:Array<Ailment> = [];
+	public var name:String;
 
 	public var id:Int = UNIT_ID_COUNTER++;
 	public var hp:Int = 100;
