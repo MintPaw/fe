@@ -136,6 +136,7 @@ class CombatState extends FlxState
 
 	private function performAct(a:Act):Void {
 		_state = "acting";
+		a.resolve(findUnitId(a.unit));
 		if (a.type == Act.MOVE) {
 			var path:Path = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
 			var delay:Float = findUnitId(a.unit).walk(path);
@@ -144,6 +145,7 @@ class CombatState extends FlxState
 
 		if (a.type == Act.ITEM_ACTION) {
 			_level.doneMoving();
+			var anim:CombatAnim = new CombatAnim(a);
 			FlxG.camera.flash(0xFFFFFFFF, 1);
 			new FlxTimer().start(1, function(t:FlxTimer):Void{_state = "select";});
 		}

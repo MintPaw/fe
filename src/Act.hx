@@ -1,6 +1,7 @@
 package ;
 
 import flixel.math.*;
+import Item;
 
 class Act
 {
@@ -15,9 +16,21 @@ class Act
 	public var action:Int;
 	public var pattern:Int;
 
+	public var resolvedUnit:Unit;
+	public var resolvedItem:Item;
+	public var resolvedAction:Action;
+	public var resolvedPattern:Pattern;
+
 	public var loc:IntPoint = new IntPoint();
 
 	public function new(type:Int) {
 		this.type = type;
+	}
+	
+	public function resolve(u:Unit):Void {
+		resolvedUnit = u;
+		resolvedItem = u.items[item];
+		resolvedAction = resolvedItem.actions[action];
+		resolvedPattern = resolvedAction.patterns[pattern];
 	}
 }
