@@ -20,6 +20,7 @@ class Act
 	public var resolvedItem:Item;
 	public var resolvedAction:Action;
 	public var resolvedPattern:Pattern;
+	public var resolvedUnitTargets:Array<Unit> = [];
 
 	public var loc:IntPoint = new IntPoint();
 
@@ -27,10 +28,19 @@ class Act
 		this.type = type;
 	}
 	
-	public function resolve(u:Unit):Void {
-		resolvedUnit = u;
-		if (item != -1) resolvedItem = u.items[item];
+	public function resolve(units:Array<Unit>):Void {
+		for (u in units) if (u.id == unit) resolvedUnit = u;
+
+		if (item != -1) resolvedItem = resolvedUnit.items[item];
 		if (action != -1) resolvedAction = resolvedItem.actions[action];
-		if (pattern != -1) resolvedPattern = resolvedAction.patterns[pattern];
+
+		if (pattern != -1) {
+			resolvedPattern = resolvedAction.patterns[pattern];
+
+			for (u in units)
+				for (tile in resolvedPattern.grid)
+					if (u.location.x == tile.x && u.location.y == tile.y)
+						resolvedUnitTargets.push(u);
+		}
 	}
 }

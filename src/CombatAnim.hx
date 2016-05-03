@@ -16,7 +16,8 @@ class CombatAnim extends FlxGroup
 		if (act.resolvedAction.name == "Slash") {
 			steps = [
 				[cameraFlash.bind(0xFFFFFFFF, 1), 2], 
-				[shakeUnit.bind(2, 2, 1), 1]
+				[shakeUnit.bind(2, 2, 1), 0]
+				// [act.bind(2, 2, 1), 1]
 			];
 		}
 
