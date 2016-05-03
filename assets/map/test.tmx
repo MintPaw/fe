@@ -38,7 +38,7 @@
 </data>
  </layer>
  <objectgroup name="obj">
-  <object id="14" name="playerSpawn" x="320" y="544">
+  <object id="14" name="player" x="320" y="544">
    <properties>
     <property name="controllable" value="1"/>
    </properties>

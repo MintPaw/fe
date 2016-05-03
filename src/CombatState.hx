@@ -38,12 +38,7 @@ class CombatState extends FlxState
 
 		for (u in _level.units) _unitGroup.add(cast add(u));
 
-		// var p = new Unit();
 		// p.getNewItem(0);
-		// p.controllable = true;
-		// p.warp(cast _level.playerSpawn.x, cast _level.playerSpawn.y);
-		// _unitGroup.add(p);
-		// add(p);
 
 		_cursor = new Cursor();
 		for (u in _unitGroup) {
