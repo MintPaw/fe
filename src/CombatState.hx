@@ -133,7 +133,7 @@ class CombatState extends FlxState
 
 	private function performAct(a:Act):Void {
 		_state = "acting";
-		a.resolve(findUnitId(a.unit));
+		a.resolve(_unitGroup.members);
 		if (a.type == Act.MOVE) {
 			var path:Path = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
 			var delay:Float = findUnitId(a.unit).walk(path);
