@@ -12,9 +12,9 @@ class Act
 	public var type:Int = 0;
 
 	public var unit:Int;
-	public var item:Int;
-	public var action:Int;
-	public var pattern:Int;
+	public var item:Int = -1;
+	public var action:Int = -1;
+	public var pattern:Int = -1;
 
 	public var resolvedUnit:Unit;
 	public var resolvedItem:Item;
@@ -29,8 +29,8 @@ class Act
 	
 	public function resolve(u:Unit):Void {
 		resolvedUnit = u;
-		resolvedItem = u.items[item];
-		resolvedAction = resolvedItem.actions[action];
-		resolvedPattern = resolvedAction.patterns[pattern];
+		if (item != -1) resolvedItem = u.items[item];
+		if (action != -1) resolvedAction = resolvedItem.actions[action];
+		if (pattern != -1) resolvedPattern = resolvedAction.patterns[pattern];
 	}
 }
