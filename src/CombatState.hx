@@ -36,9 +36,11 @@ class CombatState extends FlxState
 
 		_unitGroup = new FlxTypedGroup<Unit>();
 
-		for (u in _level.units) _unitGroup.add(cast add(u));
+		for (u in _level.units) {
+			if (u.name == "player") u.getNewItem(0);
+			_unitGroup.add(cast add(u));
+		}
 
-		// p.getNewItem(0);
 
 		_cursor = new Cursor();
 		for (u in _unitGroup) {

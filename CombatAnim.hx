@@ -15,7 +15,7 @@ class CombatAnim extends FlxGroup
 		var steps:Array<Array<Dynamic>> = [];
 		if (act.resolvedAction.name == "Slash") {
 			steps = [
-				[cameraFlash.bind(1), 2], 
+				[cameraFlash.bind(0xFFFFFFFF, 1), 2], 
 				[shakeUnit.bind(2, 2, 1), 1]
 			];
 		}
