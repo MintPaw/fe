@@ -23,6 +23,10 @@ class Text extends FlxTypedGroup<Char>
 	public var colour:FlxColor = 0xFFFFFFFF;
 	public var enabled:Bool = true;
 
+	public static function loadFont(name:String, imageLocation:String, dataLocation:String):Void {
+		fonts.set(name, FlxBitmapFont.fromAngelCode(imageLocation, dataLocation));
+	}
+
 	public function new() {
 		super();
 	}
@@ -93,10 +97,5 @@ class Text extends FlxTypedGroup<Char>
 		}
 
 		curPos.put();
-
-	}
-
-	public static function loadFont(name:String, imageLocation:String, dataLocation:String):Void {
-		fonts.set(name, FlxBitmapFont.fromAngelCode(imageLocation, dataLocation));
 	}
 }
