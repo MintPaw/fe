@@ -16,8 +16,8 @@ class CombatAnim extends FlxGroup
 		if (act.resolvedAction.name == "Slash") {
 			steps = [
 				[cameraFlash.bind(0xFFFFFFFF, 1), 2], 
-				[shakeUnit.bind(2, 2, 1), 0]
-				// [act.bind(2, 2, 1), 1]
+				[shakeUnit.bind(2, 2, 1), 0],
+				[damage.bind(act.resolvedUnitTargets[0], act.resolvedAction.damage), 0]
 			];
 		}
 
@@ -33,5 +33,9 @@ class CombatAnim extends FlxGroup
 	}
 
 	public function shakeUnit(xAmount:Int, yAmount:Int, duration:Float):Void {
+	}
+
+	public function damage(unit:Unit, amount:Int):Void {
+		unit.hp -= amount;
 	}
 }

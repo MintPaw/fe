@@ -41,7 +41,6 @@ class CombatState extends FlxState
 			_unitGroup.add(cast add(u));
 		}
 
-
 		_cursor = new Cursor();
 		for (u in _unitGroup) {
 			if (u.controllable) {

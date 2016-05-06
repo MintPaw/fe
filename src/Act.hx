@@ -39,8 +39,9 @@ class Act
 
 			for (u in units)
 				for (tile in resolvedPattern.grid)
-					if (u.location.x == tile.x && u.location.y == tile.y)
+					if (u.location.x == resolvedUnit.location.x + tile.x && u.location.y == resolvedUnit.location.y + tile.y)
 						resolvedUnitTargets.push(u);
+
 		}
 	}
 }
