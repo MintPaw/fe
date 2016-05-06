@@ -13,12 +13,13 @@ class CombatAnim extends FlxGroup
 		super();
 		this.act = act;
 		var steps:Array<Array<Dynamic>> = [];
-		if (act.resolvedAction.name == "Slash") {
+		if (act.action.name == "Slash") {
 			steps = [
 				[cameraFlash.bind(0xFFFFFFFF, 1), 2], 
 				[shakeUnit.bind(2, 2, 1), 0],
-				[damage.bind(act.resolvedUnitTargets[0], act.resolvedAction.damage), 0]
 			];
+
+				for (u in act.unitTargets) steps.push([damage.bind(u, act.action.damage), 0]);
 		}
 
 		var totalTime:Float = 0;
@@ -36,6 +37,6 @@ class CombatAnim extends FlxGroup
 	}
 
 	public function damage(unit:Unit, amount:Int):Void {
-		unit.hp -= amount;
+		unit.damage(amount);
 	}
 }

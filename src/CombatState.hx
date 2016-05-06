@@ -89,7 +89,7 @@ class CombatState extends FlxState
 				_menu.kill();
 				remove(_menu, true);
 				var a:Act = new Act(Act.MOVE);
-				a.unit = _selectedUnit.id;
+				a.unitId = _selectedUnit.id;
 				a.loc.copy(_cursor.selectedTile);
 				performAct(a);
 			}
@@ -123,7 +123,7 @@ class CombatState extends FlxState
 
 		if (_state == "item action") {
 			var a:Act = _menu.act;
-			trace(a.unit, a.item, a.action, a.pattern);
+			trace(a.unitId, a.itemId, a.actionId, a.patternId);
 			performAct(a);
 			_menu.kill();
 			remove(_menu, true);
@@ -135,7 +135,7 @@ class CombatState extends FlxState
 		a.resolve(_unitGroup.members);
 		if (a.type == Act.MOVE) {
 			var path:Path = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
-			var delay:Float = findUnitId(a.unit).walk(path);
+			var delay:Float = findUnitId(a.unitId).walk(path);
 			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";});
 		}
 

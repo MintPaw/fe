@@ -1,0 +1,20 @@
+Start
+Find necklace 
+
+Find rabbit : rabbit_ignore, rabbit_befriend, rabbit_kill
+	Bunnie requests to try on necklace : bunny_try_on_necklace, no_bunny_try_on_necklace
+	if no_bunny_try_on_necklace then
+		Bunnie requests to please try on necklace : bunny_please_try_on_necklace no_bunny_please_try_on_necklace
+	if bunny_try_on_necklace || bunny_please_try_on_necklace then
+		Bunnie requests to keep necklace : bunny_keep_necklace, no_bunny_keep_necklace
+
+Find random animals
+	?Animal choice
+	Find ???
+
+Find Desmon
+	Desmon asks for necklace : give_desmon_necklace, no_give_desmon_necklace, ignore_desmon
+		if give_desmon_necklace then
+			Desmon asks for ??? : give_desmon_???, no_give_desmon_???, ignore_desmon
+	if ignore_desmon || no_give_desmon_necklace then
+		Fight Desmon

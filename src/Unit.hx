@@ -25,7 +25,7 @@ class Unit extends FlxSpriteGroup
 	public var name:String;
 
 	public var id:Int = UNIT_ID_COUNTER++;
-	public var hp:Int = 100;
+	public var hp:Int = 10;
 	public var ap:Int = 10;
 	public var location:IntPoint = new IntPoint();
 	public var dead:Bool = false;
@@ -92,6 +92,10 @@ class Unit extends FlxSpriteGroup
 		}
 
 		super.update(elapsed);
+	}
+
+	public function damage(amount:Int):Void {
+		hp -= amount;
 	}
 }
 

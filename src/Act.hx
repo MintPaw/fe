@@ -11,16 +11,16 @@ class Act
 
 	public var type:Int = 0;
 
-	public var unit:Int;
-	public var item:Int = -1;
-	public var action:Int = -1;
-	public var pattern:Int = -1;
+	public var unitId:Int;
+	public var itemId:Int = -1;
+	public var actionId:Int = -1;
+	public var patternId:Int = -1;
 
-	public var resolvedUnit:Unit;
-	public var resolvedItem:Item;
-	public var resolvedAction:Action;
-	public var resolvedPattern:Pattern;
-	public var resolvedUnitTargets:Array<Unit> = [];
+	public var unit:Unit;
+	public var item:Item;
+	public var action:Action;
+	public var pattern:Pattern;
+	public var unitTargets:Array<Unit> = [];
 
 	public var loc:IntPoint = new IntPoint();
 
@@ -29,18 +29,18 @@ class Act
 	}
 	
 	public function resolve(units:Array<Unit>):Void {
-		for (u in units) if (u.id == unit) resolvedUnit = u;
+		for (u in units) if (u.id == unitId) unit = u;
 
-		if (item != -1) resolvedItem = resolvedUnit.items[item];
-		if (action != -1) resolvedAction = resolvedItem.actions[action];
+		if (itemId != -1) item = unit.items[itemId];
+		if (actionId != -1) action = item.actions[actionId];
 
-		if (pattern != -1) {
-			resolvedPattern = resolvedAction.patterns[pattern];
+		if (patternId != -1) {
+			pattern = action.patterns[patternId];
 
 			for (u in units)
-				for (tile in resolvedPattern.grid)
-					if (u.location.x == resolvedUnit.location.x + tile.x && u.location.y == resolvedUnit.location.y + tile.y)
-						resolvedUnitTargets.push(u);
+				for (tile in pattern.grid)
+					if (u.location.x == unit.location.x + tile.x && u.location.y == unit.location.y + tile.y)
+						unitTargets.push(u);
 
 		}
 	}

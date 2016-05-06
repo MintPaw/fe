@@ -79,10 +79,10 @@ class GameMenu extends FlxGroup
 			for (pattern in _action.patterns) {
 				if (text.text == pattern.name) {
 					act = new Act(Act.ITEM_ACTION);
-					act.unit = _unit.id;
-					act.item = _unit.items.indexOf(_item);
-					act.action = _item.actions.indexOf(_action);
-					act.pattern = _action.patterns.indexOf(pattern);
+					act.unitId = _unit.id;
+					act.itemId = _unit.items.indexOf(_item);
+					act.actionId = _item.actions.indexOf(_action);
+					act.patternId = _action.patterns.indexOf(pattern);
 					menuExit("item action");
 				}
 			}
