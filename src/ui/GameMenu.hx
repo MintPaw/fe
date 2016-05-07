@@ -36,57 +36,48 @@ class GameMenu extends FlxGroup
 	}
 
 	private function select(text:Text):Void {
+		var strings:Array<String> = [];
+
 		if (state == "main") {
 			if (text.text.toLowerCase() == "move") {
 				enabled = visible = false;
 				menuExit("move");
+			} else {
+				for (item in _unit.items)
+					if (text.text == item.name)
+						_item = item;
+
+				for (p in _item.actions) strings.push(p.name);
+				addFrame(strings);
+				state = "item";
 			}
-
-			for (item in _unit.items) {
-				if (text.text == item.name) {
-					_item = item;
-					state = "item";
-
-					var f:MenuFrame = new MenuFrame(select, hover);
-					_currentFrame = f;
-					for (a in item.actions) f.addItem(a.name);
-					add(f);
-					_frames[_frames.length-1].kill();
-					_frames.push(f);
-					return;
-				}
-			}
-		}
-
-		if (state == "item") {
-			for (action in _item.actions) {
-				if (text.text == action.name) {
+		} else if (state == "item") {
+			for (action in _item.actions)
+				if (text.text == action.name)
 					_action = action;
-					state = "action";
 
-					var f:MenuFrame = new MenuFrame(select, hover);
-					_currentFrame = f;
-					for (p in action.patterns) f.addItem(p.name);
-					add(f);
-					_frames[_frames.length-1].kill();
-					_frames.push(f);
-					return;
-				}
-			}
-		}
-
-		if (state == "action") {
-			for (pattern in _action.patterns) {
-				if (text.text == pattern.name) {
+			for (p in _action.patterns) strings.push(p.name);
+			addFrame(strings);
+			state = "action";
+		} else if (state == "action") {
 					act = new Act(Act.ITEM_ACTION);
 					act.unitId = _unit.id;
 					act.itemId = _unit.items.indexOf(_item);
 					act.actionId = _item.actions.indexOf(_action);
-					act.patternId = _action.patterns.indexOf(pattern);
+					for (pattern in _action.patterns)
+						if (text.text == pattern.name)
+							act.patternId = _action.patterns.indexOf(pattern);
 					menuExit("item action");
-				}
-			}
 		}
+	}
+
+	private function addFrame(strings:Array<String>):Void {
+		var f:MenuFrame = new MenuFrame(select, hover);
+		_currentFrame = f;
+		for (s in strings) f.addItem(s);
+		add(f);
+		_frames[_frames.length-1].kill();
+		_frames.push(f);
 	}
 
 	private function hover(text:Text):Void {

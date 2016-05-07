@@ -47,7 +47,6 @@ class CombatAnim extends FlxGroup
 	public function showDamageText(unit:Unit, amount:Int):Void {
 		var t:Text = new Text();
 		t.fontName = "default1";
-		trace(unit.location);
 		t.x = unit.location.x * Reg.TILE_SIZE;
 		t.y = unit.location.y * Reg.TILE_SIZE;
 		t.text = Std.string(amount);

@@ -114,4 +114,6 @@ class Text extends FlxTypedGroup<Char>
 
 		curPos.put();
 	}
+
+//todonow fade away text
 }

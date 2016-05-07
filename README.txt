@@ -1,5 +1,6 @@
 Todo:
 	Refactor cursor
+	Items named the same
 
 	Item => name:String, description:String, id:Int, wear:Int, age:Int, actions:Array<Action>, exp:Int, expTillNext:Int, clone():Item, use(action:Action):Void, nextId:Int
 
