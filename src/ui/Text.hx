@@ -13,6 +13,8 @@ import flixel.graphics.frames.*;
 class Text extends FlxTypedGroup<Char>
 {
 	public static var fonts:Map<String, FlxBitmapFont> = new Map();
+
+	public var scrollFactor:FlxPoint = new FlxPoint(1, 1);
 	
 	public var fontName:String;
 	public var text(default, set):String;
@@ -94,7 +96,7 @@ class Text extends FlxTypedGroup<Char>
 			var char:Char;
 			try {
 				char = recycle(Char);
-				char.scrollFactor.set();
+				char.scrollFactor.copyFrom(scrollFactor);
 				char.set(FlxGraphic.fromFrame(frame), colour);
 			} catch(e:Dynamic) {
 				trace("Error on charCode " + charCode + "(" + text.charAt(i) + ")");

@@ -42,6 +42,7 @@ class MenuFrame extends FlxGroup
 
 	public function addItem(s:String, enabled:Bool=true):Void {
 		var t:Text = new Text();
+		t.scrollFactor.set();
 		t.fontName = "default1";
 		t.width = _bg.width - _textPad.x * 2;
 		t.text = s;
