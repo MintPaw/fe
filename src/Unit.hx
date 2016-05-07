@@ -97,6 +97,7 @@ class Unit extends FlxSpriteGroup
 	public function damage(amount:Int):Void {
 		hp -= amount;
 	}
+
 }
 
 typedef Stats = { 

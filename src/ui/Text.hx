@@ -29,6 +29,11 @@ class Text extends FlxTypedGroup<Char>
 
 	public function new() {
 		super();
+
+		for (fName in fonts.keys()) {
+			fontName = fName;
+			break;
+		}
 	}
 
 	public function set_text(s:String):String {
@@ -38,6 +43,15 @@ class Text extends FlxTypedGroup<Char>
 	}
 
 	public function blit():Void {
+		if (text == null) {
+			trace("No text");
+			return;
+		}
+		if (fonts.get(fontName) == null) {
+			trace("No font called " + fontName);
+			return;
+		}
+
 		for (c in members) c.kill();
 		var font:FlxBitmapFont = fonts.get(fontName);
 		height = font.lineHeight;

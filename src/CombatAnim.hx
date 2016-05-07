@@ -3,6 +3,7 @@ package ;
 import flixel.*;
 import flixel.group.*;
 import flixel.util.*;
+import ui.*;
 import Item;
 
 class CombatAnim extends FlxGroup
@@ -19,7 +20,10 @@ class CombatAnim extends FlxGroup
 				[shakeUnit.bind(2, 2, 1), 0],
 			];
 
-				for (u in act.unitTargets) steps.push([damage.bind(u, act.action.damage), 0]);
+				for (u in act.unitTargets) {
+					steps.push([damage.bind(u, act.action.damage), 0]);
+					steps.push([showDamageText.bind(u, act.action.damage), 0]);
+				}
 		}
 
 		var totalTime:Float = 0;
@@ -38,5 +42,15 @@ class CombatAnim extends FlxGroup
 
 	public function damage(unit:Unit, amount:Int):Void {
 		unit.damage(amount);
+	}
+
+	public function showDamageText(unit:Unit, amount:Int):Void {
+		var t:Text = new Text();
+		t.fontName = "default1";
+		trace(unit.location);
+		t.x = unit.location.x * Reg.TILE_SIZE;
+		t.y = unit.location.y * Reg.TILE_SIZE;
+		t.text = Std.string(amount);
+		FlxG.state.add(t);
 	}
 }
