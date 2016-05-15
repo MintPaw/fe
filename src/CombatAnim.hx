@@ -49,6 +49,9 @@ class CombatAnim extends FlxGroup
 		t.fontName = "default1";
 		t.x = unit.location.x * Reg.TILE_SIZE;
 		t.y = unit.location.y * Reg.TILE_SIZE;
+		t.addArg("fadeOut", 1);
+		t.addArg("fallDist", 50);
+		t.addArg("fallTime", 1);
 		t.addText(Std.string(amount));
 		FlxG.state.add(t);
 	}

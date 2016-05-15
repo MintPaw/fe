@@ -21,10 +21,10 @@ class Text extends FlxTypedGroup<Char>
 	public var y:Float = 0;
 	public var width:Float = 1000;
 	public var height(default, null):Float = 0;
-	public var colour:FlxColor = 0xFFFFFFFF;
 	public var enabled:Bool = true;
 
 	private var _text:String = "";
+	private var _args:Map<String, Float> = new Map();
 
 	public static function loadFont(name:String, imageLocation:String, dataLocation:String):Void {
 		fonts.set(name, FlxBitmapFont.fromAngelCode(imageLocation, dataLocation));
@@ -92,7 +92,7 @@ class Text extends FlxTypedGroup<Char>
 			try {
 				char = recycle(Char);
 				char.scrollFactor.copyFrom(scrollFactor);
-				char.set(FlxGraphic.fromFrame(frame), colour);
+				char.set(FlxGraphic.fromFrame(frame), _args);
 			} catch(e:Dynamic) {
 				trace("Error on charCode " + charCode + "(" + _text.charAt(i) + ")");
 				throw e;
@@ -101,6 +101,7 @@ class Text extends FlxTypedGroup<Char>
 			char.x = curPos.x;
 			char.y = curPos.y;
 			char.alpha = enabled ? 1 : 0.5;
+			char.start();
 
 			curPos.x += font.getCharAdvance(charCode);
 
@@ -111,6 +112,7 @@ class Text extends FlxTypedGroup<Char>
 	}
 
 	public function setText(s:String=""):String {
+		_args = new Map();
 		_text = "";
 		return addText(s);
 	}
@@ -123,6 +125,14 @@ class Text extends FlxTypedGroup<Char>
 	
 	public function getText():String {
 		return _text;
+	}
+
+	public function addArg(s:String, v:Float):Void {
+		_args.set(s, v);
+	}
+
+	public function removeArg(s:String):Void {
+		_args.remove(s);
 	}
 
 //todonow fade away text
