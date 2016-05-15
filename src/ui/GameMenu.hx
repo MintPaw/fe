@@ -39,12 +39,12 @@ class GameMenu extends FlxGroup
 		var strings:Array<String> = [];
 
 		if (state == "main") {
-			if (text.text.toLowerCase() == "move") {
+			if (text.getText().toLowerCase() == "move") {
 				enabled = visible = false;
 				menuExit("move");
 			} else {
 				for (item in _unit.items)
-					if (text.text == item.name)
+					if (text.getText() == item.name)
 						_item = item;
 
 				for (p in _item.actions) strings.push(p.name);
@@ -53,7 +53,7 @@ class GameMenu extends FlxGroup
 			}
 		} else if (state == "item") {
 			for (action in _item.actions)
-				if (text.text == action.name)
+				if (text.getText() == action.name)
 					_action = action;
 
 			for (p in _action.patterns) strings.push(p.name);
@@ -65,7 +65,7 @@ class GameMenu extends FlxGroup
 					act.itemId = _unit.items.indexOf(_item);
 					act.actionId = _item.actions.indexOf(_action);
 					for (pattern in _action.patterns)
-						if (text.text == pattern.name)
+						if (text.getText() == pattern.name)
 							act.patternId = _action.patterns.indexOf(pattern);
 					menuExit("item action");
 		}

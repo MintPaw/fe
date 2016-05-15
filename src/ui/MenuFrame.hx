@@ -45,7 +45,7 @@ class MenuFrame extends FlxGroup
 		t.scrollFactor.set();
 		t.fontName = "default1";
 		t.width = _bg.width - _textPad.x * 2;
-		t.text = s;
+		t.setText(s);
 		t.x = _bg.x + _textPad.x;
 		t.y = _bg.y + _textPad.y + (texts.length * (t.height + 10));
 		t.enabled = enabled;
