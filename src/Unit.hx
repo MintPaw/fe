@@ -8,6 +8,7 @@ import flixel.tweens.*;
 import flixel.ui.*;
 import flixel.ui.FlxBar;
 import flixel.util.*;
+import comps.*;
 import openfl.*;
 import Level;
 
@@ -18,13 +19,13 @@ class Unit extends FlxSpriteGroup
 	public var mainGraphic:FlxSprite = new FlxSprite();
 	public var apBar:FlxBar;
 
-	public var items:Array<Item> = [];
-	public var drops:Array<Item> = [];
-	public var stats:Stats = {};
-	public var ailments:Array<Ailment> = [];
-	public var name:String;
+	public var items:Array<Item> = []; //
+	public var drops:Array<Item> = []; //
+	public var stats:Stats = {}; //
+	public var ailments:Array<Ailment> = []; //
+	public var name:String; //
 
-	public var id:Int = UNIT_ID_COUNTER++;
+	public var id:Int = UNIT_ID_COUNTER++; //
 	public var hp:Int = 10;
 	public var ap:Int = 10;
 	public var location:IntPoint = new IntPoint();
