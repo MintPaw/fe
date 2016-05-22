@@ -10,6 +10,7 @@ import flixel.util.*;
 import flixel.tweens.*;
 import openfl.*;
 import Level;
+import comps.*;
 
 class CombatState extends FlxState
 {
@@ -17,8 +18,8 @@ class CombatState extends FlxState
 	private var _cursor:Cursor;
 	private var _menu:GameMenu;
 
-	private var _unitGroup:FlxTypedGroup<Unit>;
-	private var _selectedUnit:Unit = null;
+	private var _entityGroup:FlxTypedGroup<Entity>;
+	private var _selectedEntity:Entity = null;
 
 	private var _state:String;
 
@@ -34,17 +35,19 @@ class CombatState extends FlxState
 		add(_level.tilemap);
 		add(_level.moveGrid);
 
-		_unitGroup = new FlxTypedGroup<Unit>();
+		_entityGroup = new FlxTypedGroup<Entity>();
 
-		for (u in _level.units) {
-			if (u.name == "player") u.getNewItem(0);
-			_unitGroup.add(cast add(u));
+		for (entity in _level.entities) {
+			if (entity.name == "player") entity.getComp("ItemC").getNewItem(0);
+			_entityGroup.add(cast add(entity));
 		}
 
 		_cursor = new Cursor();
-		for (u in _unitGroup) {
-			if (u.controllable) {
-				_cursor.moveTo(cast u.location.x, cast u.location.y);
+		for (entity in _entityGroup) {
+			var control:ControlC = cast entity.getComp("ControlC");
+			if (control != null) {
+				var move:MoveC = cast entity.getComp("MoveC");
+				_cursor.moveTo(cast move.location.x, cast move.location.y);
 				break;
 			}
 		}
@@ -89,7 +92,7 @@ class CombatState extends FlxState
 				_menu.kill();
 				remove(_menu, true);
 				var a:Act = new Act(Act.MOVE);
-				a.unitId = _selectedUnit.id;
+				a.entityId = _selectedEntity.id;
 				a.loc.copy(_cursor.selectedTile);
 				performAct(a);
 			}
@@ -97,19 +100,20 @@ class CombatState extends FlxState
 
 		if (_state == "select") {
 			_cursor.moveTo(cast nextTile.x, cast nextTile.y);
-			if (Input.map.justRelZ) selectUnit(findUnitOn(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y));
+			if (Input.map.justRelZ) selectEntity(findEntityOn(cast _cursor.selectedTile.x, cast _cursor.selectedTile.y));
 		}
 	}
 
-	private function findUnitOn(x:Int, y:Int):Unit {
-		for (u in _unitGroup) if (u.location.x == x && u.location.y == y) return u;
+	private function findEntityOn(x:Int, y:Int):Entity {
+		for (entity in _entityGroup) if (entity.getComp("MoveC").location.x == x && entity.getComp("MoveC").location.y == y)
+			return entity;
 		return null;
 	}
 
-	private function selectUnit(unit:Unit):Void {
-		if (unit == null) return;
-		_selectedUnit = unit;
-		_menu = new GameMenu(unit);
+	private function selectEntity(entity:Entity):Void {
+		if (entity == null) return;
+		_selectedEntity = entity;
+		_menu = new GameMenu(entity);
 		_menu.menuExit = menuExit;
 		add(_menu);
 	}
@@ -118,12 +122,12 @@ class CombatState extends FlxState
 		_state = type;
 
 		if (_state == "move") {
-			_level.createMoveGrid(_selectedUnit);
+			_level.createMoveGrid(_selectedEntity);
 		}
 
 		if (_state == "item action") {
 			var a:Act = _menu.act;
-			trace(a.unitId, a.itemId, a.actionId, a.patternId);
+			trace(a.entityId, a.itemId, a.actionId, a.patternId);
 			performAct(a);
 			_menu.kill();
 			remove(_menu, true);
@@ -132,10 +136,10 @@ class CombatState extends FlxState
 
 	private function performAct(a:Act):Void {
 		_state = "acting";
-		a.resolve(_unitGroup.members);
+		a.resolve(_entityGroup.members);
 		if (a.type == Act.MOVE) {
 			var path:Path = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
-			var delay:Float = findUnitId(a.unitId).walk(path);
+			var delay:Float = findEntityId(a.entityId).getComp("MoveC").walk(path);
 			new FlxTimer().start(delay, function(t:FlxTimer):Void{_state = "select";});
 		}
 
@@ -147,8 +151,8 @@ class CombatState extends FlxState
 		}
 	}
 
-	private function findUnitId(id:Int):Unit {
-		for (u in _unitGroup) if (u.id == id) return u;
+	private function findEntityId(id:Int):Entity {
+		for (entity in _entityGroup) if (entity.id == id) return entity;
 		return null;
 	}
 }

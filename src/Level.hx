@@ -13,6 +13,7 @@ import de.polygonal.ds.LinkedQueue;
 import de.polygonal.ds.PriorityQueue;
 import de.polygonal.ds.HashTable;
 import Item;
+import comps.*;
 
 class Level
 {
@@ -20,7 +21,7 @@ class Level
 	public var moveGrid:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
 
 	public var playerSpawn:FlxPoint = new FlxPoint();
-	public var units:Array<Unit> = [];
+	public var entities:Array<Entity> = [];
 	public var validMovePoints:Array<IntPoint> = [];
 
 	private var _allPoints:Array<IntPoint> = [];
@@ -37,11 +38,15 @@ class Level
 		tilemap.loadMapFromCSV(cast(tiledMap.getLayer("main"), TiledTileLayer).csvData, tileGraphic, 32, 32, null, 1);
 
 		for (obj in cast(tiledMap.getLayer("obj"), TiledObjectLayer).objects) {
-			var u:Unit = new Unit();
-			u.controllable = obj.properties.get("controllable") == "1";
-			u.name = obj.name;
-			u.warp(cast obj.x/Reg.TILE_SIZE, cast obj.y/Reg.TILE_SIZE);
-			units.push(u);
+			var entity:Entity = new Entity();
+			entity.addComp("comps.ItemC");
+			entity.addComp("comps.MoveC");
+			entity.addComp("comps.RenderC");
+			entity.addComp("comps.StatC");
+			if (obj.properties.get("controllable") == "1") entity.addComp("comps.ControlC");
+			entity.name = obj.name;
+			entity.getComp("MoveC").warpToTile(Std.int(obj.x/Reg.TILE_SIZE), Std.int(obj.y/Reg.TILE_SIZE));
+			entities.push(entity);
 		}
 
 		for (i in 0...tilemap.widthInTiles)
@@ -49,7 +54,7 @@ class Level
 				_allPoints.push(new IntPoint(i, j));
 	}
 
-	public function createMoveGrid(unit:Unit):Void {
+	public function createMoveGrid(entity:Entity):Void {
 		validMovePoints = [];
 		_cameFromGraph.clear();
 
@@ -66,16 +71,16 @@ class Level
 			for (p in possiblePoints) {
 				if (
 						p != null &&
-						p.x >= unit.location.x - unit.ap &&
-						p.x <= unit.location.x + unit.ap &&
-						p.y >= unit.location.y - unit.ap &&
-						p.y <= unit.location.y + unit.ap) a.push(p);
+						p.x >= entity.getComp("MoveC").location.x - entity.getComp("StatC").ap &&
+						p.x <= entity.getComp("MoveC").location.x + entity.getComp("StatC").ap &&
+						p.y >= entity.getComp("MoveC").location.y - entity.getComp("StatC").ap &&
+						p.y <= entity.getComp("MoveC").location.y + entity.getComp("StatC").ap) a.push(p);
 			}
 
 			return a;
 		}
 
-		_startGraph = getPoint(unit.location.x, unit.location.y);
+		_startGraph = getPoint(entity.getComp("MoveC").location.x, entity.getComp("MoveC").location.y);
 		var frontier:PriorityQueue<IntPoint> = new PriorityQueue<IntPoint>(128);
 		_startGraph.priority = 0;
 		frontier.enqueue(_startGraph);
@@ -90,7 +95,7 @@ class Level
 
 			for (next in getConnected(current)) {
 				var newCost:Int = costSoFar.get(current) + getCost(next);
-				if ((!costSoFar.hasKey(next) || newCost < costSoFar.get(next)) && newCost <= unit.ap) {
+				if ((!costSoFar.hasKey(next) || newCost < costSoFar.get(next)) && newCost <= entity.getComp("StatC").ap) {
 					costSoFar.set(next, newCost);
 					next.priority = newCost;
 					if (!frontier.contains(next)) frontier.enqueue(next);
@@ -148,23 +153,23 @@ class Level
 		for (m in moveGrid) m.kill();
 	}
 
-	public function showPattern(unit:Unit, action:Action, patternIndex:Int=-1) {
+	public function showPattern(position:IntPoint, action:Action, patternIndex:Int=-1) {
 		var patterns:Array<Pattern> = action.patterns;
 
 		if (patternIndex == -1) {
-			for (i in 0...patterns.length) addPattern(unit, patterns[i]);
+			for (i in 0...patterns.length) addPattern(position, patterns[i]);
 		} else {
 			doneMoving();
-			addPattern(unit, patterns[patternIndex]);
+			addPattern(position, patterns[patternIndex]);
 		}
 	}
 
-	private function addPattern(unit:Unit, pattern:Pattern):Void {
+	private function addPattern(position:IntPoint, pattern:Pattern):Void {
 		for (p in pattern.grid) {
 			var tile:FlxSprite = moveGrid.recycle(FlxSprite);
 			tile.makeGraphic(Reg.TILE_SIZE, Reg.TILE_SIZE, 0x88FF0000);
-			tile.x = (unit.location.x + p.x) * Reg.TILE_SIZE;
-			tile.y = (unit.location.y + p.y) * Reg.TILE_SIZE;
+			tile.x = (position.x + p.x) * Reg.TILE_SIZE;
+			tile.y = (position.y + p.y) * Reg.TILE_SIZE;
 			moveGrid.add(tile);
 		}
 	}

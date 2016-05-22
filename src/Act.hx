@@ -11,16 +11,16 @@ class Act
 
 	public var type:Int = 0;
 
-	public var unitId:Int;
+	public var entityId:Int;
 	public var itemId:Int = -1;
 	public var actionId:Int = -1;
 	public var patternId:Int = -1;
 
-	public var unit:Unit;
+	public var entity:Entity;
 	public var item:Item;
 	public var action:Action;
 	public var pattern:Pattern;
-	public var unitTargets:Array<Unit> = [];
+	public var entityTargets:Array<Entity> = [];
 
 	public var loc:IntPoint = new IntPoint();
 
@@ -28,19 +28,20 @@ class Act
 		this.type = type;
 	}
 	
-	public function resolve(units:Array<Unit>):Void {
-		for (u in units) if (u.id == unitId) unit = u;
+	public function resolve(entities:Array<Entity>):Void {
+		for (curEnt in entities) if (curEnt.id == entityId) entity = curEnt;
 
-		if (itemId != -1) item = unit.items[itemId];
+		if (itemId != -1) item = entity.getComp("ItemC").itemList[itemId];
 		if (actionId != -1) action = item.actions[actionId];
 
 		if (patternId != -1) {
 			pattern = action.patterns[patternId];
 
-			for (u in units)
+			for (curEnt in entities)
 				for (tile in pattern.grid)
-					if (u.location.x == unit.location.x + tile.x && u.location.y == unit.location.y + tile.y)
-						unitTargets.push(u);
+					if (curEnt.getComp("MoveC").location.x == entity.getComp("MoveC").location.x + tile.x &&
+							curEnt.getComp("MoveC").location.y == entity.getComp("MoveC").location.y + tile.y)
+						entityTargets.push(curEnt);
 
 		}
 	}

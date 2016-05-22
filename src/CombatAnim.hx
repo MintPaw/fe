@@ -17,10 +17,10 @@ class CombatAnim extends FlxGroup
 		if (act.action.name == "Slash") {
 			steps = [
 				[cameraFlash.bind(0xFFFFFFFF, 1), 2], 
-				[shakeUnit.bind(2, 2, 1), 0],
+				[shakeEntity.bind(2, 2, 1), 0],
 			];
 
-				for (u in act.unitTargets) {
+				for (u in act.entityTargets) {
 					steps.push([damage.bind(u, act.action.damage), 0]);
 					steps.push([showDamageText.bind(u, act.action.damage), 0]);
 				}
@@ -37,18 +37,18 @@ class CombatAnim extends FlxGroup
 		FlxG.camera.flash(color, duration, null, true);
 	}
 
-	public function shakeUnit(xAmount:Int, yAmount:Int, duration:Float):Void {
+	public function shakeEntity(xAmount:Int, yAmount:Int, duration:Float):Void {
 	}
 
-	public function damage(unit:Unit, amount:Int):Void {
-		unit.damage(amount);
+	public function damage(entity:Entity, amount:Int):Void {
+		entity.getComp("StatC").damage(amount);
 	}
 
-	public function showDamageText(unit:Unit, amount:Int):Void {
+	public function showDamageText(entity:Entity, amount:Int):Void {
 		var t:Text = new Text();
 		t.fontName = "default1";
-		t.x = unit.location.x * Reg.TILE_SIZE;
-		t.y = unit.location.y * Reg.TILE_SIZE;
+		t.x = entity.getComp("MoveC").location.x * Reg.TILE_SIZE;
+		t.y = entity.getComp("MoveC").location.y * Reg.TILE_SIZE;
 		t.addArg("fadeOut", 1);
 		t.addArg("fallDist", 50);
 		t.addArg("fallTime", 1);

@@ -16,8 +16,24 @@ class Entity extends FlxSpriteGroup {
 		comps = [];
 	}
 
-	public function getComp(name:String):Comp {
+	public function addComp(compClassName:String) {
+		comps.push(Type.createInstance(Type.resolveClass(compClassName), [this]));
+	}
+
+	public function testComp(name:String):Bool {
+		for (comp in comps) if (comp.name == name) return true;
+		return false;
+	}
+
+	// @:generic public function getCompAs<T>(name:String, classAs:T):T {
+	// 	for (comp in comps) if (comp.name == name) return comp;
+	// 	throw 'No comp $name';
+	// 	return null;
+	// }
+
+	public function getComp(name:String):Dynamic {
 		for (comp in comps) if (comp.name == name) return comp;
+		throw 'No comp $name';
 		return null;
 	}
 }

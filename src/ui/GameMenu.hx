@@ -6,7 +6,7 @@ import Item;
 
 class GameMenu extends FlxGroup
 {
-	private var _unit:Unit;
+	private var _entity:Entity;
 	private var _item:Item;
 	private var _action:Action;
 	private var _frames:Array<MenuFrame>;
@@ -18,18 +18,18 @@ class GameMenu extends FlxGroup
 	public var hidden:Bool = false;
 	public var act:Act;
 
-	public function new(unit:Unit) {
+	public function new(entity:Entity) {
 		super();
-		_unit = unit;
+		_entity = entity;
 		_frames = [];
 
 		var f:MenuFrame = new MenuFrame(select, hover);
 		_currentFrame = f;
 		add(f);
 
-		if (_unit.controllable) {
+		if (_entity.testComp("MoveC")) {
 			f.addItem("Move");
-			for (item in _unit.items) f.addItem(item.name);
+			for (item in cast(_entity.getComp("ItemC"), comps.ItemC).itemList) f.addItem(item.name);
 		}
 
 		_frames.push(f);
@@ -43,7 +43,7 @@ class GameMenu extends FlxGroup
 				enabled = visible = false;
 				menuExit("move");
 			} else {
-				for (item in _unit.items)
+				for (item in cast(_entity.getComp("ItemC"), comps.ItemC).itemList)
 					if (text.getText() == item.name)
 						_item = item;
 
@@ -61,8 +61,8 @@ class GameMenu extends FlxGroup
 			state = "action";
 		} else if (state == "action") {
 					act = new Act(Act.ITEM_ACTION);
-					act.unitId = _unit.id;
-					act.itemId = _unit.items.indexOf(_item);
+					act.entityId = _entity.id;
+					act.itemId = _entity.getComp("ItemC").itemList.indexOf(_item);
 					act.actionId = _item.actions.indexOf(_action);
 					for (pattern in _action.patterns)
 						if (text.getText() == pattern.name)
@@ -82,9 +82,9 @@ class GameMenu extends FlxGroup
 
 	private function hover(text:Text):Void {
 		if (state == "item") {
-			Reg.level.showPattern(_unit, _item.actions[_currentFrame.texts.indexOf(text)]);
+			Reg.level.showPattern(_entity.getComp("MoveC").location, _item.actions[_currentFrame.texts.indexOf(text)]);
 		} else if (state == "action") {
-			Reg.level.showPattern(_unit, _action, _currentFrame.texts.indexOf(text));
+			Reg.level.showPattern(_entity.getComp("MoveC").location, _action, _currentFrame.texts.indexOf(text));
 		}
 	}
 
