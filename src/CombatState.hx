@@ -18,7 +18,7 @@ class CombatState extends FlxState
 	private var _cursor:Cursor;
 	private var _menu:GameMenu;
 
-	private var _entityGroup:FlxTypedGroup<Entity>;
+	private var _entities:Array<Entity>;
 	private var _selectedEntity:Entity = null;
 
 	private var _state:String;
@@ -35,15 +35,17 @@ class CombatState extends FlxState
 		add(_level.tilemap);
 		add(_level.moveGrid);
 
-		_entityGroup = new FlxTypedGroup<Entity>();
+		_entities = [];
 
 		for (entity in _level.entities) {
 			if (entity.name == "player") entity.getComp("ItemC").getNewItem(0);
-			_entityGroup.add(cast add(entity));
+			add(entity.getComp("RenderC"));
+			_entities.push(entity);
 		}
 
 		_cursor = new Cursor();
-		for (entity in _entityGroup) {
+		for (entity in _entities) {
+			trace(entity.getComp("ControlC"));
 			var control:ControlC = cast entity.getComp("ControlC");
 			if (control != null) {
 				var move:MoveC = cast entity.getComp("MoveC");
@@ -105,7 +107,7 @@ class CombatState extends FlxState
 	}
 
 	private function findEntityOn(x:Int, y:Int):Entity {
-		for (entity in _entityGroup) if (entity.getComp("MoveC").location.x == x && entity.getComp("MoveC").location.y == y)
+		for (entity in _entities) if (entity.getComp("MoveC").location.x == x && entity.getComp("MoveC").location.y == y)
 			return entity;
 		return null;
 	}
@@ -136,7 +138,7 @@ class CombatState extends FlxState
 
 	private function performAct(a:Act):Void {
 		_state = "acting";
-		a.resolve(_entityGroup.members);
+		a.resolve(_entities);
 		if (a.type == Act.MOVE) {
 			var path:Path = _level.findPath(new IntPoint(a.loc.x, a.loc.y));
 			var delay:Float = findEntityId(a.entityId).getComp("MoveC").walk(path);
@@ -152,7 +154,7 @@ class CombatState extends FlxState
 	}
 
 	private function findEntityId(id:Int):Entity {
-		for (entity in _entityGroup) if (entity.id == id) return entity;
+		for (entity in _entities) if (entity.id == id) return entity;
 		return null;
 	}
 }

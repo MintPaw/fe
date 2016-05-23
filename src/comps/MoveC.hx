@@ -18,17 +18,17 @@ class MoveC extends Comp
 	public function warpToTile(x:Int, y:Int, updateVisualLoc:Bool=true):Void {
 		location.set(x, y);
 		if (updateVisualLoc) updateVisual();
+		trace(entity);
 	}
 
 	public function walk(path:Path):Float {
 		// state = "walking";
-		var render:RenderC = cast entity.getComp("RenderC");
 		var stat:StatC = cast entity.getComp("StatC");
 		var moveTime:Float = 0.1;
 		var delayTime:Float = 0.2;
 
 		for (i in 0...path.path.length) {
-			FlxTween.tween(render.whole, {x:path.path[i].x * Reg.TILE_SIZE, y:path.path[i].y * Reg.TILE_SIZE}, moveTime,
+			FlxTween.tween(entity, {x:path.path[i].x * Reg.TILE_SIZE, y:path.path[i].y * Reg.TILE_SIZE}, moveTime,
 					{startDelay:delayTime*i, onComplete:
 						function(t:FlxTween):Void{stat.ap -= path.costs[i]; reloadLoc();}
 					});
@@ -41,8 +41,8 @@ class MoveC extends Comp
 	}
 
 	public function updateVisual():Void {
-		entity.x = entity.x * Reg.TILE_SIZE;
-		entity.y = entity.y * Reg.TILE_SIZE;
+		entity.x = location.x * Reg.TILE_SIZE;
+		entity.y = location.y * Reg.TILE_SIZE;
 	}
 
 	private function reloadLoc():Void {

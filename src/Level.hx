@@ -45,7 +45,7 @@ class Level
 			entity.addComp("comps.StatC");
 			if (obj.properties.get("controllable") == "1") entity.addComp("comps.ControlC");
 			entity.name = obj.name;
-			entity.getComp("MoveC").warpToTile(Std.int(obj.x/Reg.TILE_SIZE), Std.int(obj.y/Reg.TILE_SIZE));
+			entity.getComp("MoveC").warpToTile(Std.int(obj.x/Reg.TILE_SIZE), Std.int(obj.y/Reg.TILE_SIZE), true);
 			entities.push(entity);
 		}
 
